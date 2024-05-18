@@ -1,0 +1,86 @@
+from django.db import models
+from zelthy.apps.dynamic_models.models import DynamicModelBase
+from zelthy.apps.dynamic_models.fields import ZForeignKey
+from zelthy.core.storage_utils import ZFileField
+from ..franchise.models import Student, Franchisee
+from ..teacher.models import Teacher
+
+# Create your models here.
+
+class School(DynamicModelBase):
+    name = models.CharField(max_length=255)
+    contact = models.CharField(max_length=100)
+    mail = models.EmailField(max_length=100)
+    location = models.CharField(max_length=100)
+
+class SchoolStudent(DynamicModelBase):
+    name = models.CharField(max_length=100)
+    school = ZForeignKey(School,on_delete=models.CASCADE)
+    course = models.CharField(max_length=100)
+    programme = models.CharField(max_length=100)
+    level = models.CharField(max_length=50)
+    dob = models.DateField()
+    contact = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
+    
+class Competition(DynamicModelBase):
+    circular_no = models.CharField(max_length=100,unique=True)
+    name = models.CharField(max_length=100)
+    level_cutoff_date = models.DateField()
+    pdf_file = ZFileField()
+
+class CompetitionStudent(DynamicModelBase):
+    competition = ZForeignKey(Competition, on_delete=models.CASCADE)
+    franchise = ZForeignKey(Franchisee, on_delete=models.CASCADE)
+    student = ZForeignKey(Student, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+
+class CompetitionResult(DynamicModelBase):
+    competition = ZForeignKey(Competition, on_delete=models.CASCADE)
+    student = ZForeignKey(Student, on_delete=models.CASCADE)
+    rank = models.PositiveIntegerField()
+    
+class Enquiry(DynamicModelBase):
+    STUDENT = 'Student'
+    FRANCHISEE = 'Franchisee'
+    TEACHER = 'Teacher'
+
+    ENQUIRY_TYPE_CHOICES = [
+        (STUDENT, 'Student'),
+        (FRANCHISEE, 'Franchisee'),
+        (TEACHER, 'Teacher'),
+    ]
+
+    COUNTRY_CODES = [
+        ('+1', '+1 (United States)'),
+        ('+44', '+44 (United Kingdom)'),
+        ('+91', '+91 (India)'),
+        ('+86', '+86 (China)'),
+        ('+81', '+81 (Japan)'),
+        ('+49', '+49 (Germany)'),
+        ('+7', '+7 (Russia)'),
+        ('+55', '+55 (Brazil)'),
+        ('+33', '+33 (France)'),
+        ('+39', '+39 (Italy)'),
+        ('+82', '+82 (South Korea)'),
+        # Add more country codes as needed
+    ]
+
+    name = models.CharField(max_length=255)
+    mail = models.EmailField()
+    type = models.CharField(max_length=255, choices=ENQUIRY_TYPE_CHOICES)
+    phone_country_code = models.CharField(max_length=5, choices=COUNTRY_CODES)
+    phone_number = models.CharField(max_length=15)
+    city = models.CharField(max_length=255)
+    pin = models.CharField(max_length=10)
+    state = models.CharField(max_length=255)
+    country = models.CharField(max_length=255)  
+    date = models.DateTimeField(auto_now_add=True)
+
+class Event(DynamicModelBase):
+    name = models.CharField(max_length=255)
+    date = models.DateField()
+    photo = ZFileField()
+    details = models.TextField()

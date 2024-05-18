@@ -1,0 +1,28 @@
+{
+  "policies": [
+    {
+      "name": "LandingPageViewAccess",
+      "description": "Landing policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "landing.views.LandingView",
+            "type": "view"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EnquiryViewAccess",
+      "description": "Enquiry policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "landing.views.EnquiryView",
+            "type": "view"
+          }
+        ]
+      }
+    }
+  ]
+}

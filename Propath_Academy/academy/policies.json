@@ -1,0 +1,100 @@
+{
+  "policies": [
+    {
+      "name": "CompetitionViewAccess",
+      "description": "Competition policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "academy.views.CompetitionCrudView",
+            "type": "view"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CompetitionResultViewAccess",
+      "description": "Competition Result policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "academy.views.CompetitionResultCrudView",
+            "type": "view"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CompetitionRegistrationsViewAccess",
+      "description": "Competition Registrations policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "academy.views.CompetitionStudentCrudView",
+            "type": "view"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SchoolViewAccess",
+      "description": "School policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "academy.views.SchoolCrudView",
+            "type": "view"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SchoolStudentViewAccess",
+      "description": "School  Students policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "academy.views.SchoolStudentCrudView",
+            "type": "view"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EnquiryDataViewAccess",
+      "description": "Enquiry Data policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "academy.views.EnquiryDataView",
+            "type": "view"
+          }
+        ]
+      }
+    },
+    {
+      "name": "EventViewAccess",
+      "description": "Event policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "academy.views.EventCrudView",
+            "type": "view"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BirthdayAccess",
+      "description": "Birthday policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "academy.views.check_birthdays",
+            "type": "view"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "policies": [
+    {
+      "name": "NotificationCrudViewAccess",
+      "description": "Notification Crud View policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "notifications.views.NotificationCrudView",
+            "type": "view"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "policies": [
+    {
+      "name": "FranchiseeViewAccess",
+      "description": "Franchisee policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "franchise.views.FranchiseeCrudView",
+            "type": "view"
+          }
+        ]
+      }
+    },
+    {
+      "name": "StudentViewAccess",
+      "description": "Student policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "franchise.views.StudentCrudView",
+            "type": "view"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LevelCertificateViewAccess",
+      "description": "Level Certificate policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "franchise.views.LevelCertificateCrudView",
+            "type": "view"
+          }
+        ]
+      }
+    }
+  ]
+}
