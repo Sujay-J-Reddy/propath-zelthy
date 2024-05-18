@@ -3,6 +3,8 @@ from ..packages.crud.table.base import ModelTable
 from ..packages.crud.table.column import ModelCol, StringCol
 from .forms import NotificationForm
 from .models import Notification
+from zelthy.core.utils import get_current_role
+from ..franchise.utils import get_current_franchise
 
 class NotificationTable(ModelTable):
     date = ModelCol(display_as="Date", searchable=True, sortable=True)
@@ -27,7 +29,7 @@ class NotificationTable(ModelTable):
             "type": "form",
             "form": NotificationForm,  # Specify the form to use for editing
             "roles": [
-                "Admin", "AnonymousUsers"
+                "Admin"
             ],  # Specify roles that can perform the action
         }
     ]
@@ -49,4 +51,16 @@ class NotificationTable(ModelTable):
         if modified_id is not None:
             return Q(id=modified_id)
         return Q()
+    
+    def get_table_data_queryset(self):
+        role = get_current_role()
+        queryset = super().get_table_data_queryset()
+        if role.name ==  'Admin':
+            return queryset.filter(account_type='admin')
+        elif role.name == 'Teacher':
+            return queryset.filter(account_type='teacher')
+        else:
+            return queryset.filter(account_type__in=['franchise', 'teacher'], franchise=get_current_franchise())
+        
+
     

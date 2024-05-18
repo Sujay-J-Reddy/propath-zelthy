@@ -7,7 +7,8 @@ from ..franchise.forms import CompetitionStudentForm
 from . details import EventDetail, EnquiryDetail, CompetitionDetail, CompetitionResultDetail, SchoolDetail, SchoolStudentDetail
 from django.db.models import F, Value, CharField
 from django.db.models.functions import Concat
-
+from zelthy.core.utils import get_current_role
+from ..franchise.utils import get_current_franchise
 class EventTable(ModelTable):
     name = ModelCol(display_as="Name", sortable=True, searchable=True)
     date = ModelCol(display_as="Date", sortable=True, searchable=True)
@@ -22,7 +23,7 @@ class EventTable(ModelTable):
             "type": "form",
             "form": EventForm,  # Specify the form to use for editing
             "roles": [
-                "Admin", "AnonymousUsers"
+                "Admin"
             ],  # Specify roles that can perform the action
         }
     ]
@@ -37,13 +38,14 @@ class EventTable(ModelTable):
             "details"
         ]
 
-    def id_Q_obj(self, search_term):
-        try:
-            modified_id = int(search_term) 
-        except ValueError:
-            modified_id = None  # Not an integer, ignore
-        if modified_id is not None:
-            return Q(id=modified_id)
+    def name_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(name__contains = search_term)
+        return Q()
+    
+    def details_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(details__contains = search_term)
         return Q()
 
 class EnquiryTable(ModelTable):
@@ -76,13 +78,39 @@ class EnquiryTable(ModelTable):
             "date",
         ]
 
-    def id_Q_obj(self, search_term):
-        try:
-            modified_id = int(search_term) 
-        except ValueError:
-            modified_id = None  # Not an integer, ignore
-        if modified_id is not None:
-            return Q(id=modified_id)
+    def name_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(name__contains = search_term)
+        return Q()
+    
+    def mail_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(mail__contains = search_term)
+        return Q()
+    
+    def city_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(city__contains = search_term)
+        return Q()
+    
+    def country_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(country__contains = search_term)
+        return Q()
+    
+    def state_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(state__contains = search_term)
+        return Q()
+    
+    def phone_number_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(phone_number__contains = search_term)
+        return Q()
+    
+    def pin_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(pin__contains = search_term)
         return Q()
 
 class CompetitionTable(ModelTable):
@@ -109,7 +137,7 @@ class CompetitionTable(ModelTable):
             "type": "form",
             "form": CompetitionStudentForm,  # Specify the form to use for editing
             "roles": [
-                "Franchisee", "AnonymousUsers"
+                "Franchisee"
             ],  # Specify roles that can perform the action
         }
     ]
@@ -180,7 +208,14 @@ class CompetitionResultTable(ModelTable):
         # Implement logic to check if the user can perform the Edit action
         # Example: Check if the user has the necessary permissions to edit records
         return True
-
+    
+    def get_table_data_queryset(self):
+        queryset= super().get_table_data_queryset()
+        role = get_current_role()
+        if role.name == 'Admin':
+            return queryset
+        else:
+            return queryset.filter(franchise=get_current_franchise())
     def id_Q_obj(self, search_term):
         try:
             modified_id = int(search_term) 

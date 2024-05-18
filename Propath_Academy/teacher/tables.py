@@ -3,6 +3,8 @@ from ..packages.crud.table.column import ModelCol, StringCol
 from django.db.models import Q
 from .models import Teacher, InstructorFeedback
 from .forms import TeacherForm, TeacherLevelForm
+from .utils import get_current_teacher
+from zelthy.core.utils import get_current_role
 
 class TeacherTable(ModelTable):
     name = ModelCol(display_as="Name", sortable=True, searchable=True)
@@ -27,7 +29,7 @@ class TeacherTable(ModelTable):
             "type": "form",
             "form": TeacherForm,  # Specify the form to use for editing
             "roles": [
-                "Admin", "AnonymousUsers"
+                "Admin"
             ],  # Specify roles that can perform the action
         },
         {
@@ -37,7 +39,7 @@ class TeacherTable(ModelTable):
             "type": "form",
             "form": TeacherLevelForm,  # Specify the form to use for editing
             "roles": [
-                "Admin", "AnonymousUsers"
+                "Admin",
             ],  
         }
     ]
@@ -84,6 +86,14 @@ class TeacherTable(ModelTable):
         if modified_id is not None:
             return Q(id=modified_id)
         return Q()
+    
+    def get_table_data_queryset(self):
+        queryset = super().get_table_data_queryset()
+        role = get_current_role()
+        if role.name == 'teacher':
+            return queryset.filter(name=get_current_teacher().name)
+        else:
+            return queryset
 
 class InstructorFeedbackTable(ModelTable):
     teacher = ModelCol(display_as = "Name", searchable = True, sortable = True)
@@ -119,3 +129,11 @@ class InstructorFeedbackTable(ModelTable):
             "comments_suggestions",
             "date",
         ]
+
+    def get_table_data_queryset(self):
+        queryset = super().get_table_data_queryset()
+        role = get_current_role()
+        if role.name == 'teacher':
+            return queryset.filter(name=get_current_teacher().name)
+        else:
+            return queryset    

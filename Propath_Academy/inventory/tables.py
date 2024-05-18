@@ -5,7 +5,9 @@ from .forms import KitForm, VendorForm, ItemForm, LogForm, OrderForm, SchoolOrde
 from .models import Kit, Vendor, Item, Log, Order, SchoolOrder
 from .details import OrderDetail, SchoolOrderDetail, LogDetail, KitDetail, ItemDetail, OrderDetail
 from .utils import json_to_html_table
-import json
+from zelthy.core.utils import get_current_role
+from ..franchise.utils import get_current_franchise
+
 class KitTable(ModelTable):
     name = ModelCol(display_as="Kit Name", sortable=True, searchable=True)
     table_actions = []
@@ -197,6 +199,14 @@ class OrderTable(ModelTable):
             html = json_to_html_table(obj.items)
             return html
         return "None"
+    
+    def get_table_data_queryset(self):
+        queryset = super().get_table_data_queryset()
+        role = get_current_role()
+        if role.name == 'Franchisee':
+            return queryset.filter(franchise = get_current_franchise())
+        else:
+            return queryset
     
 class SchoolOrderTable(OrderTable):
     id = ModelCol(display_as="Order ID", searchable=True, sortable=True)

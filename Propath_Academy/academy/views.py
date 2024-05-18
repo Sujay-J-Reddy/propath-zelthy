@@ -1,5 +1,4 @@
 from django.http import HttpResponse
-from zelthy.core.utils import get_current_role
 from ..packages.frame.decorator import add_frame_context
 from ..packages.crud.base import BaseCrudView
 from .tables import CompetitionTable, CompetitionResultTable, CompetitionStudentTable, SchoolTable, SchoolStudentTable, EnquiryTable, EventTable
@@ -49,7 +48,7 @@ class CompetitionCrudView(BaseCrudView):
         return True
 
     def display_add_button_check(self, request):
-        return get_current_role().name in ['Admin','AnonymousUsers']
+        return get_current_role().name in ['Admin']
 
 class CompetitionResultCrudView(BaseCrudView):
     page_title = "Competition Results"
@@ -61,7 +60,7 @@ class CompetitionResultCrudView(BaseCrudView):
         return True
 
     def display_add_button_check(self, request):
-        return get_current_role().name in [ 'Admin','AnonymousUsers']
+        return get_current_role().name in [ 'Admin']
     
 class CompetitionStudentCrudView(BaseCrudView):
     page_title = "Competition Registrations"
@@ -94,7 +93,7 @@ class SchoolStudentCrudView(BaseCrudView):
         return True
 
     def display_add_button_check(self, request):
-        return get_current_role().name in [ 'Admin', 'AnonymousUsers']
+        return get_current_role().name in [ 'Admin']
 
 
 def check_birthdays(request, *args, **kwargs):

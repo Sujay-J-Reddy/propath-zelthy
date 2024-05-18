@@ -52,6 +52,9 @@ class Franchisee(DynamicModelBase):
     find_about_us = models.CharField(max_length=20, choices=FIND_US_CHOICES)
     user = ZOneToOneField(AppUserModel, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
+
 class Student(DynamicModelBase):
     s_id = models.CharField(max_length=20, unique=True)
     franchise = ZForeignKey(Franchisee,on_delete=models.CASCADE)

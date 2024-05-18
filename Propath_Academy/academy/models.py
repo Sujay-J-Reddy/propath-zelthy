@@ -13,6 +13,9 @@ class School(DynamicModelBase):
     mail = models.EmailField(max_length=100)
     location = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.name
+
 class SchoolStudent(DynamicModelBase):
     name = models.CharField(max_length=100)
     school = ZForeignKey(School,on_delete=models.CASCADE)

@@ -6,17 +6,8 @@ from ..notifications.models import Notification
 from zelthy.apps.appauth.models import UserRoleModel
 from zelthy.apps.appauth.models import AppUserModel
 from zelthy.core.utils import get_current_request
-
-def get_current_franchise():
-
-    # req = get_current_request()
-    # user = req.user
-    # try:
-    #     user = Franchisee.objects.get(user=user)
-    # except Franchisee.DoesNotExist:
-    #     return None
-    # return user
-    return Franchisee.objects.get(pk=1)
+from .utils import get_current_franchise
+    # return Franchisee.objects.get(pk=1)
 
 
 class StudentForm(BaseForm):

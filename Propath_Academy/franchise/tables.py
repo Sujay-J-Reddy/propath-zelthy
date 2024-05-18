@@ -5,6 +5,8 @@ from ..packages.crud.table.column import ModelCol, StringCol
 from .models import Franchisee, Student, LevelCertificate
 from .forms import FranchiseeForm, StudentForm, StudentLevelForm
 from .details import FranchiseDetail, LevelCertificateDetail, StudentDetail
+from ..franchise.utils import get_current_franchise
+from zelthy.core.utils import get_current_role
 
 class FranchiseeTable(ModelTable):
     id = ModelCol(display_as="ID", sortable=True, searchable=True)
@@ -83,7 +85,7 @@ class StudentTable(ModelTable):
             "type": "form",
             "form": StudentForm,  # Specify the form to use for editing
             "roles": [
-                "Franchisee", "AnonymousUsers"
+                "Franchisee"
             ],  # Specify roles that can perform the action
         },
         {
@@ -92,7 +94,7 @@ class StudentTable(ModelTable):
         "description": "Update Student Level",
         "type": "form",
         "form": StudentLevelForm,
-        "roles": ["Franchisee", "AnonymousUsers"]
+        "roles": ["Franchisee"]
     },
     ]
 
@@ -149,7 +151,11 @@ class StudentTable(ModelTable):
         Retrieves and annotates the queryset to enable progressive search in ID field.
         """
         queryset = super().get_table_data_queryset()
-        return queryset.order_by("dropped")
+        role = get_current_role()
+        if role.name == 'Franchisee':
+            return queryset.filter(franchise=get_current_franchise()).order_by("dropped")
+        else:
+            return queryset.order_by("dropped")
 
 class LevelCertificateTable(ModelTable):
     student = ModelCol(display_as="Student", searchable=True, sortable=True)
