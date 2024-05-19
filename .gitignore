@@ -16,7 +16,7 @@ env/
 develop-eggs/
 **/dist/
 node_modules/
-downloads/
+# downloads/
 static/
 eggs/
 .eggs/
