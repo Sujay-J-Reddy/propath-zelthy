@@ -27,7 +27,7 @@ class FranchiseeTable(ModelTable):
             "type": "form",
             "form": FranchiseeForm,  # Specify the form to use for editing
             "roles": [
-                "Admin"
+                "Admin, AnonymousUsers"
             ],  # Specify roles that can perform the action
         }
     ]
@@ -85,7 +85,7 @@ class StudentTable(ModelTable):
             "type": "form",
             "form": StudentForm,  # Specify the form to use for editing
             "roles": [
-                "Franchisee"
+                "Franchisee, AnonymousUsers"
             ],  # Specify roles that can perform the action
         },
         {
@@ -94,7 +94,7 @@ class StudentTable(ModelTable):
         "description": "Update Student Level",
         "type": "form",
         "form": StudentLevelForm,
-        "roles": ["Franchisee"]
+        "roles": ["Franchisee", "AnonymousUsers"]
     },
     ]
 

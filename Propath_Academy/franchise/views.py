@@ -16,10 +16,10 @@ class FranchiseeCrudView(BaseCrudView):
         return True
 
     def display_add_button_check(self, request):
-        return get_current_role().name in ['Admin']
+        return get_current_role().name in ['Admin', 'AnonymousUsers']
     
     def display_download_button_check(self, request):
-        return get_current_role().name in ['Admin']
+        return get_current_role().name in ['Admin', 'AnonymousUsers']
 
 class StudentCrudView(BaseCrudView):
     page_title = "Student"
@@ -31,7 +31,7 @@ class StudentCrudView(BaseCrudView):
         return True
 
     def display_add_button_check(self, request):
-        return get_current_role().name in [ 'Franchisee']
+        return get_current_role().name in [ 'Franchisee', 'AnonymousUsers']
     
 class LevelCertificateCrudView(BaseCrudView):
     page_title = "Level Certificate Requests"
@@ -43,7 +43,7 @@ class LevelCertificateCrudView(BaseCrudView):
         return True
     
     def display_add_button_check(self, request):
-        return get_current_role().name in [ 'Franchisee']
+        return get_current_role().name in [ 'Franchisee', 'AnonymousUsers']
     
 # class TestView(View):
 #     def get(self,request, *args, **kwargs):

@@ -27,7 +27,7 @@ class KitCrudView(BaseCrudView):
         return True
 
     def display_add_button_check(self, request):
-        return get_current_role().name in ['Admin']
+        return get_current_role().name in ['Admin', 'AnonymousUsers']
     
 class VendorCrudView(BaseCrudView):
     page_title = "Vendors"
@@ -39,7 +39,7 @@ class VendorCrudView(BaseCrudView):
         return True
 
     def display_add_button_check(self, request):
-        return get_current_role().name in ['Admin']
+        return get_current_role().name in ['Admin', 'AnonymousUsers']
     
 class ItemCrudView(BaseCrudView):
     page_title = "Items"
@@ -51,7 +51,7 @@ class ItemCrudView(BaseCrudView):
         return True
 
     def display_add_button_check(self, request):
-        return get_current_role().name in ['Admin']
+        return get_current_role().name in ['Admin', 'AnonymousUsers']
     
 class LogCrudView(BaseCrudView):
     page_title = "Logs"
@@ -63,7 +63,7 @@ class LogCrudView(BaseCrudView):
         return True
 
     def display_add_button_check(self, request):
-        return get_current_role().name in ['Admin']
+        return get_current_role().name in ['Admin', 'AnonymousUsers']
     
 class OrderCrudView(BaseCrudView):
     page_title = "Orders"
@@ -76,6 +76,6 @@ class OrderCrudView(BaseCrudView):
         return True
 
     def display_add_button_check(self, request):
-        return get_current_role().name in ['Franchisee']
+        return get_current_role().name in ['Franchisee', 'AnonymousUsers']
     
 

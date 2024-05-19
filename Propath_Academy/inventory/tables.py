@@ -19,7 +19,7 @@ class KitTable(ModelTable):
             "type": "form",
             "form": KitForm,  # Specify the form to use for editing
             "roles": [
-                "Admin"
+                "Admin", "AnonymousUsers"
             ],  # Specify roles that can perform the action
         }
     ]
@@ -51,7 +51,7 @@ class VendorTable(ModelTable):
             "type": "form",
             "form": VendorForm,  # Specify the form to use for editing
             "roles": [
-                "Admin"
+                "Admin", "AnonymousUsers"
             ],  # Specify roles that can perform the action
         }
     ]
@@ -88,7 +88,7 @@ class ItemTable(ModelTable):
             "type": "form",
             "form": ItemForm,  # Specify the form to use for editing
             "roles": [
-                "Admin"
+                "Admin", "AnonymousUsers"
             ],  # Specify roles that can perform the action
         }
     ]
@@ -129,7 +129,7 @@ class LogTable(ModelTable):
             "type": "form",
             "form": LogForm,  # Specify the form to use for editing
             "roles": [
-                "Admin"
+                "Admin", "AnonymousUsers"
             ],  # Specify roles that can perform the action
         }
     ]
