@@ -15,7 +15,7 @@ class SchoolOrderCrudView(BaseCrudView):
         return True
 
     def display_add_button_check(self, request):
-        return get_current_role().name in ['Admin']
+        return get_current_role().name in ['Admin', 'AnonymousUsers']
 
 class KitCrudView(BaseCrudView):
     page_title = "Kits"
@@ -76,6 +76,6 @@ class OrderCrudView(BaseCrudView):
         return True
 
     def display_add_button_check(self, request):
-        return get_current_role().name in ['Franchisee', 'AnonymousUsers']
+        return get_current_role().name in ['Franchisee']
     
 

@@ -27,7 +27,7 @@ class FranchiseeTable(ModelTable):
             "type": "form",
             "form": FranchiseeForm,  # Specify the form to use for editing
             "roles": [
-                "Admin, AnonymousUsers"
+                "Admin"
             ],  # Specify roles that can perform the action
         }
     ]
@@ -45,18 +45,35 @@ class FranchiseeTable(ModelTable):
         ]
         
 
+
     def can_perform_row_action_edit(self, request, obj):
         # Implement logic to check if the user can perform the Edit action
         # Example: Check if the user has the necessary permissions to edit records
         return True
 
     def id_Q_obj(self, search_term):
-        try:
-            modified_id = int(search_term) 
-        except ValueError:
-            modified_id = None  # Not an integer, ignore
-        if modified_id is not None:
-            return Q(id=modified_id)
+        if search_term is not None:
+            return Q(id__contains=search_term)
+        return Q()
+
+    def name_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(name__contains=search_term)
+        return Q()
+
+    def contact_number_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(contact_number__contains=search_term)
+        return Q()
+
+    def center_address_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(center_address__contains=search_term)
+        return Q()
+
+    def email_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(email__contains=search_term)
         return Q()
     
     
@@ -85,7 +102,7 @@ class StudentTable(ModelTable):
             "type": "form",
             "form": StudentForm,  # Specify the form to use for editing
             "roles": [
-                "Franchisee, AnonymousUsers"
+                "Franchisee"
             ],  # Specify roles that can perform the action
         },
         {
@@ -94,7 +111,7 @@ class StudentTable(ModelTable):
         "description": "Update Student Level",
         "type": "form",
         "form": StudentLevelForm,
-        "roles": ["Franchisee", "AnonymousUsers"]
+        "roles": ["Franchisee"]
     },
     ]
 
@@ -196,5 +213,52 @@ class LevelCertificateTable(ModelTable):
     
     def franchise_getval(self, obj):
         return obj.student.franchise.name
+    
+    def s_id_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(s_id__contains=search_term)
+        return Q()
+
+    def franchise_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(franchise__name__contains=search_term)
+        return Q()
+
+    def name_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(name__contains=search_term)
+        return Q()
+
+    def course_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(course__contains=search_term)
+        return Q()
+
+    def programme_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(programme__contains=search_term)
+        return Q()
+
+    def level_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(level__contains=search_term)
+        return Q()
+
+    def contact_number_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(contact_number__contains=search_term)
+        return Q()
+
+    def residential_address_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(residential_address__contains=search_term)
+        return Q()
+
+    def email_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(email__contains=search_term)
+        return Q()
+
+
     
     

@@ -24,5 +24,5 @@ class Notification(DynamicModelBase):
     notification_type = models.CharField(max_length=50, choices=NOTIFICATION_TYPE_CHOICES)
     account_type = models.CharField(max_length=50, choices=ACCOUNT_TYPE_CHOICES)
     details = models.TextField(blank=True,default="Details Not Available")
-    franchise = ZForeignKey(Franchisee, on_delete=models.DO_NOTHING, null=True)
+    franchise = ZForeignKey(Franchisee, on_delete=models.DO_NOTHING, null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)

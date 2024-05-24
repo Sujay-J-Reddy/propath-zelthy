@@ -9,6 +9,7 @@ from django.db.models import F, Value, CharField
 from django.db.models.functions import Concat
 from zelthy.core.utils import get_current_role
 from ..franchise.utils import get_current_franchise
+
 class EventTable(ModelTable):
     name = ModelCol(display_as="Name", sortable=True, searchable=True)
     date = ModelCol(display_as="Date", sortable=True, searchable=True)
@@ -158,14 +159,14 @@ class CompetitionTable(ModelTable):
         # Example: Check if the user has the necessary permissions to edit records
         return True
     
+    def circular_no_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(circular_no__contains=search_term)
+        return Q()
 
-    def id_Q_obj(self, search_term):
-        try:
-            modified_id = int(search_term) 
-        except ValueError:
-            modified_id = None  # Not an integer, ignore
-        if modified_id is not None:
-            return Q(id=modified_id)
+    def name_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(name__contains=search_term)
         return Q()
 
 class CompetitionResultTable(ModelTable):
@@ -257,13 +258,20 @@ class CompetitionStudentTable(ModelTable):
         annotated_queryset = CompetitionStudent.objects.annotate(composite_key=Concat(F('competition'), Value('-'), F('franchise')))
         distinct_entries = annotated_queryset.filter(composite_key__in=annotated_queryset.values('composite_key').distinct())
         return distinct_entries    
-    def id_Q_obj(self, search_term):
-        try:
-            modified_id = int(search_term) 
-        except ValueError:
-            modified_id = None  # Not an integer, ignore
-        if modified_id is not None:
-            return Q(id=modified_id)
+
+    def competition_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(competition__name__contains=search_term)
+        return Q()
+
+    def student_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(student__name__contains=search_term)
+        return Q()
+
+    def rank_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(rank__contains=search_term)
         return Q()
 
 class SchoolTable(ModelTable):
@@ -295,14 +303,26 @@ class SchoolTable(ModelTable):
             "location"
         ]
 
-    def id_Q_obj(self, search_term):
-        try:
-            modified_id = int(search_term) 
-        except ValueError:
-            modified_id = None  # Not an integer, ignore
-        if modified_id is not None:
-            return Q(id=modified_id)
+    def name_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(name__contains=search_term)
         return Q()
+
+    def contact_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(contact__contains=search_term)
+        return Q()
+
+    def mail_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(mail__contains=search_term)
+        return Q()
+
+    def location_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(location__contains=search_term)
+        return Q()
+
     
     def can_perform_row_action_edit(self, request, obj):
         # Implement logic to check if the user can perform the Edit action
@@ -344,14 +364,6 @@ class SchoolStudentTable(ModelTable):
             "contact",
         ]
 
-    def id_Q_obj(self, search_term):
-        try:
-            modified_id = int(search_term) 
-        except ValueError:
-            modified_id = None  # Not an integer, ignore
-        if modified_id is not None:
-            return Q(id=modified_id)
-        return Q()
     
     def can_perform_row_action_edit(self, request, obj):
         # Implement logic to check if the user can perform the Edit action
@@ -360,5 +372,41 @@ class SchoolStudentTable(ModelTable):
     
     def school_getval(self, obj):
         return f"{obj.school.name}"
+    
+    def name_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(name__contains=search_term)
+        return Q()
+
+    def school_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(school__name__contains=search_term)
+        return Q()
+
+    def course_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(course__contains=search_term)
+        return Q()
+
+    def programme_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(programme__contains=search_term)
+        return Q()
+
+    def level_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(level__contains=search_term)
+        return Q()
+
+    def dob_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(dob__contains=search_term)
+        return Q()
+
+    def contact_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(contact__contains=search_term)
+        return Q()
+
     
  

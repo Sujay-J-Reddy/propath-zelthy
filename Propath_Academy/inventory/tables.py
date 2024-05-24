@@ -19,7 +19,7 @@ class KitTable(ModelTable):
             "type": "form",
             "form": KitForm,  # Specify the form to use for editing
             "roles": [
-                "Admin", "AnonymousUsers"
+                "Admin"
             ],  # Specify roles that can perform the action
         }
     ]
@@ -29,14 +29,10 @@ class KitTable(ModelTable):
         detail_class = KitDetail
         fields = ["name"]
 
-    def id_Q_obj(self, search_term):
-        try:
-            modified_id = int(search_term) 
-        except ValueError:
-            modified_id = None  # Not an integer, ignore
-        if modified_id is not None:
-            return Q(id=modified_id)
-        return Q()
+    def name_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(name__contains=search_term)
+        return Q()  
     
 class VendorTable(ModelTable):
     name = ModelCol(display_as="Vendor Name", searchable=True, sortable=True)
@@ -51,7 +47,7 @@ class VendorTable(ModelTable):
             "type": "form",
             "form": VendorForm,  # Specify the form to use for editing
             "roles": [
-                "Admin", "AnonymousUsers"
+                "Admin"
             ],  # Specify roles that can perform the action
         }
     ]
@@ -88,7 +84,7 @@ class ItemTable(ModelTable):
             "type": "form",
             "form": ItemForm,  # Specify the form to use for editing
             "roles": [
-                "Admin", "AnonymousUsers"
+                "Admin"
             ],  # Specify roles that can perform the action
         }
     ]
@@ -103,18 +99,26 @@ class ItemTable(ModelTable):
             "last_purchase_price",
             "kit",
         ]
-
-    def id_Q_obj(self, search_term):
-        try:
-            modified_id = int(search_term) 
-        except ValueError:
-            modified_id = None  # Not an integer, ignore
-        if modified_id is not None:
-            return Q(id=modified_id)
-        return Q()
     
     def kit_getval(self, obj):
-        return obj.kit.name
+        if obj.kit:
+            return obj.kit.name
+        return "None"
+    
+    def name_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(name__contains=search_term)
+        return Q()
+
+    def contact_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(contact__contains=search_term)
+        return Q()
+
+    def location_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(location__contains=search_term)
+        return Q()
 
 class LogTable(ModelTable):
     vendor = ModelCol(display_as="Vendor Name", searchable=True, sortable=True)
@@ -129,7 +133,7 @@ class LogTable(ModelTable):
             "type": "form",
             "form": LogForm,  # Specify the form to use for editing
             "roles": [
-                "Admin", "AnonymousUsers"
+                "Admin"
             ],  # Specify roles that can perform the action
         }
     ]
@@ -150,13 +154,19 @@ class LogTable(ModelTable):
     def vendor_getval(self, obj):
         return f"{obj.vendor.name}"
 
-    def id_Q_obj(self, search_term):
-        try:
-            modified_id = int(search_term) 
-        except ValueError:
-            modified_id = None  # Not an integer, ignore
-        if modified_id is not None:
-            return Q(id=modified_id)
+    def vendor_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(vendor__name__contains=search_term)
+        return Q()
+
+    def date_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(date__contains=search_term)
+        return Q()
+
+    def items_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(items__contains=search_term)
         return Q()
     
 class OrderTable(ModelTable):
@@ -207,7 +217,27 @@ class OrderTable(ModelTable):
             return queryset.filter(franchise = get_current_franchise())
         else:
             return queryset
-    
+        
+    def franchise_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(franchise__name__contains=search_term)
+        return Q()
+
+    def kits_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(kits__contains=search_term)
+        return Q()
+
+    def items_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(items__contains=search_term)
+        return Q()
+
+    def order_date_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(order_date__contains=search_term)
+        return Q()
+
 class SchoolOrderTable(OrderTable):
     id = ModelCol(display_as="Order ID", searchable=True, sortable=True)
     school = ModelCol(display_as="School", searchable=True, sortable=True)
@@ -242,11 +272,24 @@ class SchoolOrderTable(OrderTable):
     
     def school_getval(self, obj):
         return obj.school.name
-    def id_Q_obj(self, search_term):
-        try:
-            modified_id = int(search_term) 
-        except ValueError:
-            modified_id = None  # Not an integer, ignore
-        if modified_id is not None:
-            return Q(id=modified_id)
+    
+    def school_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(school__name__contains=search_term)
         return Q()
+
+    def kits_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(kits__contains=search_term)
+        return Q()
+
+    def items_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(items__contains=search_term)
+        return Q()
+
+    def order_date_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(order_date__contains=search_term)
+        return Q()
+

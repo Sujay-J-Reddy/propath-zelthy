@@ -23,6 +23,90 @@
           }
         ]
       }
+    },
+    {
+      "name": "AboutUsViewAccess",
+      "description": "About Us policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "landing.views.AboutUsView",
+            "type": "view"
+          }
+        ]
+      }
+    },
+    {
+      "name": "AbacusViewAccess",
+      "description": "Abacus policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "landing.views.AbacusView",
+            "type": "view"
+          }
+        ]
+      }
+    },
+    {
+      "name": "AbacusCourseViewAccess",
+      "description": "Abacus Course policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "landing.views.AbacusCourseView",
+            "type": "view"
+          }
+        ]
+      }
+    },
+    {
+      "name": "VedicMathsViewAccess",
+      "description": "Vedic Maths policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "landing.views.VedicMathsView",
+            "type": "view"
+          }
+        ]
+      }
+    },
+    {
+      "name": "VedicCourseViewAccess",
+      "description": "Vedic Course policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "landing.views.VedicCourseView",
+            "type": "view"
+          }
+        ]
+      }
+    },
+    {
+      "name": "HandwritingCourseViewAccess",
+      "description": "Handwriting policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "landing.views.HandwritingCourseView",
+            "type": "view"
+          }
+        ]
+      }
+    },
+    {
+      "name": "HandwritingViewAccess",
+      "description": "Handwriting Course policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "landing.views.HandwritingView",
+            "type": "view"
+          }
+        ]
+      }
     }
   ]
 }

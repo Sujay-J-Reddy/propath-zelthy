@@ -4,7 +4,7 @@ from .models import Notification
 
 class NotificationForm(BaseForm):
     details = ModelField(placeholder="Details",required=True, required_msg="This field is required")
-    franchise = ModelField(placeholder="Select a franchise for specific notification, leave blank for general",required=False)
+    franchise = ModelField(placeholder="Select a franchise for specific notification, leave blank for general",required=False, extra_ui_schema={"ui:widget": "select"})
 
     class Meta:
         model = Notification

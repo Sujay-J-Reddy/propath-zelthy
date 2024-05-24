@@ -33,7 +33,7 @@ class ItemForm(BaseForm):
     description = ModelField(placeholder="Description", required=True, required_msg="This field is required")
     qty = ModelField(placeholder="Quantity", required=True, required_msg="This field is required")
     last_purchase_price = ModelField(placeholder="Last Purchase Price", required=True, required_msg="This field is required")
-    kit = ModelField(placeholder="Kit")
+    kit = ModelField(placeholder="Kit", extra_ui_schema={"ui:widget": "select"})
 
     class Meta:
         model = Item
@@ -45,6 +45,12 @@ class ItemForm(BaseForm):
             "last_purchase_price",
             "kit"
         ]
+
+    def __init__(self, *args, **kwargs):
+        super(ItemForm, self).__init__(*args, **kwargs)
+        self.fields['kit'].choices=[(str(x.id), x.__str__()) for x in Kit.objects.all()]
+
+
 
 class LogForm(BaseForm):
     vendor = ModelField(placeholder="Vendor", required=True, required_msg="This field is required")
