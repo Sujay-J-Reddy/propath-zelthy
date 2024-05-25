@@ -5,10 +5,11 @@ from .models import Teacher, InstructorFeedback
 from .forms import TeacherForm, TeacherLevelForm
 from .utils import get_current_teacher
 from zelthy.core.utils import get_current_role
+from ..franchise.utils import get_current_franchise
 
 class TeacherTable(ModelTable):
     name = ModelCol(display_as="Name", sortable=True, searchable=True)
-    photo = ModelCol(display_as="Photo", sortable=True, searchable=True)
+    photo = ModelCol(display_as="Photo", sortable=False, searchable=False)
     centre_name = ModelCol(display_as="Centre Name", sortable=True, searchable=True)
     franchise = ModelCol(display_as="Franchise", sortable=True, searchable=True)
     program_name = ModelCol(display_as="Program Name", sortable=True, searchable=True)
@@ -182,8 +183,9 @@ class InstructorFeedbackTable(ModelTable):
         role = get_current_role()
         if role.name == 'teacher':
             return queryset.filter(name=get_current_teacher().name)
-        else:
-            return queryset
+        elif role.name == 'franchise':
+            return queryset.filter(franchise=get_current_franchise())
+        return queryset
 
     def teacher_Q_obj(self, search_term):
         if search_term is not None:

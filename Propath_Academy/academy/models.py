@@ -34,11 +34,17 @@ class Competition(DynamicModelBase):
     level_cutoff_date = models.DateField()
     pdf_file = ZFileField()
 
+    def __str__(self):
+        return f"{self.circular_no} - {self.name}"
+
 class CompetitionStudent(DynamicModelBase):
     competition = ZForeignKey(Competition, on_delete=models.CASCADE)
     franchise = ZForeignKey(Franchisee, on_delete=models.CASCADE)
     student = ZForeignKey(Student, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
+
+    class Meta(DynamicModelBase.Meta):
+        unique_together = ('competition', 'franchise')
 
 class CompetitionResult(DynamicModelBase):
     competition = ZForeignKey(Competition, on_delete=models.CASCADE)

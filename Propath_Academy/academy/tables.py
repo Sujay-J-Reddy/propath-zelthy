@@ -4,7 +4,7 @@ from ..packages.crud.table.column import ModelCol, StringCol
 from .models import Competition, CompetitionResult, CompetitionStudent, School, SchoolStudent, Enquiry, Event
 from .forms import CompetitionForm, CompetitionResultForm, SchoolForm, SchoolStudentForm, EventForm
 from ..franchise.forms import CompetitionStudentForm
-from . details import EventDetail, EnquiryDetail, CompetitionDetail, CompetitionResultDetail, SchoolDetail, SchoolStudentDetail
+from . details import EventDetail, EnquiryDetail, CompetitionDetail, CompetitionResultDetail, SchoolDetail, SchoolStudentDetail,CompetitionStudentDetail
 from django.db.models import F, Value, CharField
 from django.db.models.functions import Concat
 from zelthy.core.utils import get_current_role
@@ -13,7 +13,7 @@ from ..franchise.utils import get_current_franchise
 class EventTable(ModelTable):
     name = ModelCol(display_as="Name", sortable=True, searchable=True)
     date = ModelCol(display_as="Date", sortable=True, searchable=True)
-    photo = ModelCol(display_as="Photo", sortable=True, searchable=True)
+    photo = ModelCol(display_as="Photo", sortable=False, searchable=False)
     details = ModelCol(display_as="Details", sortable=True, searchable=True)
     table_actions = []
     row_actions = [
@@ -118,7 +118,7 @@ class CompetitionTable(ModelTable):
     circular_no = ModelCol(display_as="Circular Number", sortable=True, searchable=True)
     name = ModelCol(display_as="Name", sortable=True, searchable=True)
     level_cutoff_date = ModelCol(display_as="Level Cut off Date", sortable=True, searchable=True)
-    pdf_file = ModelCol(display_as="PDF File", sortable=True, searchable=True)
+    pdf_file = ModelCol(display_as="PDF File", sortable=False, searchable=False)
     table_actions = []
     row_actions = [
         {
@@ -216,7 +216,7 @@ class CompetitionResultTable(ModelTable):
         if role.name == 'Admin':
             return queryset
         else:
-            return queryset.filter(franchise=get_current_franchise())
+            return queryset.filter(student__franchise_id=get_current_franchise())
     def id_Q_obj(self, search_term):
         try:
             modified_id = int(search_term) 
@@ -228,16 +228,17 @@ class CompetitionResultTable(ModelTable):
 class CompetitionStudentTable(ModelTable):
     circular_no = StringCol(display_as="Circular Number", sortable=False, searchable=True)
     franchise = StringCol(display_as="Franchise", sortable=True, searchable=True)
-    student = StringCol(display_as="Students", sortable=True, searchable=True)
+    # student = StringCol(display_as="Students", sortable=True, searchable=True)
     date = ModelCol(display_as="Date", sortable=True, searchable=True)
     table_actions = []
     row_actions = []    
     class Meta:
         model = CompetitionStudent
+        detail_class = CompetitionStudentDetail
         fields = [
             "franchise",
-            "student",
-            "date",
+            "date"
+
         ]
         # row_selector = {"enabled": True, "multi": False}
 
@@ -255,24 +256,22 @@ class CompetitionStudentTable(ModelTable):
     #     print(query, flush=True)
     #     return query
     def get_table_data_queryset(self):
-        annotated_queryset = CompetitionStudent.objects.annotate(composite_key=Concat(F('competition'), Value('-'), F('franchise')))
-        distinct_entries = annotated_queryset.filter(composite_key__in=annotated_queryset.values('composite_key').distinct())
-        return distinct_entries    
+        queryset= super().get_table_data_queryset()
+        distinct_combinations =  queryset.order_by('franchise', 'competition').distinct('franchise','competition')
+        return distinct_combinations
+           
 
     def competition_Q_obj(self, search_term):
         if search_term is not None:
             return Q(competition__name__contains=search_term)
         return Q()
 
-    def student_Q_obj(self, search_term):
+
+    def circular_no_Q_obj(self, search_term):
         if search_term is not None:
-            return Q(student__name__contains=search_term)
+            return Q(circular_no__name__contains=search_term)
         return Q()
 
-    def rank_Q_obj(self, search_term):
-        if search_term is not None:
-            return Q(rank__contains=search_term)
-        return Q()
 
 class SchoolTable(ModelTable):
     name = ModelCol(display_as="Name", searchable=True, sortable=True)

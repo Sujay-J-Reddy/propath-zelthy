@@ -85,6 +85,7 @@ class StudentTable(ModelTable):
     programme = ModelCol(display_as="Programme", sortable=True, searchable=True)
     level = ModelCol(display_as="Level", sortable=True, searchable=True)
     franchise = ModelCol(display_as="Franchise", sortable=True, searchable=True, user_roles=["Admin"])
+    course_start_date = ModelCol(display_as="Course Start Date", sortable=True, searchable=True)
     contact_number = ModelCol(
         display_as="Contact Number", sortable=True, searchable=True
     )
@@ -126,6 +127,7 @@ class StudentTable(ModelTable):
             "course",
             "programme",
             "level",
+            "course_start_date",
             "contact_number",
             "residential_address",
             "email",
@@ -258,6 +260,15 @@ class LevelCertificateTable(ModelTable):
         if search_term is not None:
             return Q(email__contains=search_term)
         return Q()
+    
+    def get_table_data_queryset(self):
+        queryset = super().get_table_data_queryset()
+        role = get_current_role()
+        if role.name == 'franchise':
+            return queryset.filter(franchise=get_current_franchise())
+        return queryset
+
+
 
 
     

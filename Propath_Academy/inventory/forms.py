@@ -238,18 +238,18 @@ class OrderForm(BaseForm):
     def __init__(self, *args, **kwargs):
         super(OrderForm, self).__init__(*args, **kwargs)
         instance = kwargs.get("instance")
-        items = [str(item.pk) for item in Item.objects.all()]
+        items = [str(item.pk) for item in Item.objects.filter(kit=None)]
         kits = [str(kit.pk) for kit in Kit.objects.all()]
         self.custom_schema_fields["order_items"].schema["items"]["properties"]["item"]["enum"] = items
-        self.custom_schema_fields["order_items"].schema["items"]["properties"]["item"]["enumNames"] = [obj.name for obj in Item.objects.all()]
+        self.custom_schema_fields["order_items"].schema["items"]["properties"]["item"]["enumNames"] = [obj.name for obj in Item.objects.filter(kit=None)]
         self.custom_schema_fields["kits"].schema["items"]["properties"]["kit"]["enum"] = kits
         self.custom_schema_fields["kits"].schema["items"]["properties"]["kit"]["enumNames"] = [obj.name for obj in Kit.objects.all()]
         if instance is not None:
             self.update = True
-            items = Item.objects.all().values_list("id")
+            items = Item.objects.filter(kit=None).values_list("id")
             kits = Kit.objects.all().values_list("id")
             self.custom_schema_fields["order_items"].schema["items"]["properties"]["item"]["enum"] = items
-        self.custom_schema_fields["order_items"].schema["items"]["properties"]["item"]["enumNames"] = [obj.name for obj in Item.objects.all()]
+        self.custom_schema_fields["order_items"].schema["items"]["properties"]["item"]["enumNames"] = [obj.name for obj in Item.objects.filter(kit=None)]
         self.custom_schema_fields["kits"].schema["items"]["properties"]["kit"]["enum"] = kits
         self.custom_schema_fields["kits"].schema["items"]["properties"]["kit"]["enumNames"] = [obj.name for obj in Kit.objects.all()]
 

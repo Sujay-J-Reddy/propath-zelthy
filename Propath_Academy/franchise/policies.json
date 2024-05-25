@@ -35,6 +35,18 @@
           }
         ]
       }
+    },
+    {
+      "name": "CourseStartDateViewAccess",
+      "description": "Course Start Date policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "franchise.views.CourseStartDateView",
+            "type": "view"
+          }
+        ]
+      }
     }
   ]
 }

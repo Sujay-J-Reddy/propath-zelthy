@@ -1,9 +1,15 @@
 from zelthy.core.utils import get_current_role
-from ..packages.crud.base import BaseCrudView
+from ..packages.crud.base import BaseCrudView, BaseFormOnlyView
 from .tables import FranchiseeTable, StudentTable, LevelCertificateTable
-from .forms import FranchiseeForm, StudentForm, StudentLevelForm
+from .forms import FranchiseeForm, StudentForm, StudentLevelForm, CourseStartDateForm
 from django.views import View
 from django.http import HttpResponse
+
+
+class CourseStartDateView(BaseFormOnlyView):
+    form = CourseStartDateForm
+    success_url = '/franchisee/students/'
+    page_title = "Course Start Date Form"
 
 
 class FranchiseeCrudView(BaseCrudView):

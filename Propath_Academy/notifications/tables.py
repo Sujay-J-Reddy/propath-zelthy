@@ -60,7 +60,7 @@ class NotificationTable(ModelTable):
         elif role.name == 'Teacher':
             return queryset.filter(account_type='teacher')
         else:
-            return queryset.filter(account_type__in=['franchise', 'teacher'], franchise=get_current_franchise())
+            return  queryset.filter(Q(account_type__in=['franchise', 'teacher']) & (Q(franchise=get_current_franchise()) | Q(franchise=None)))
         
 
     

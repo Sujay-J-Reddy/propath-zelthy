@@ -1,4 +1,5 @@
-from ..packages.crud.forms import BaseForm
+from datetime import timezone
+from ..packages.crud.forms import BaseForm, BaseSimpleForm
 from ..packages.crud.form_fields import ModelField, CustomSchemaField
 from .models import Student, Franchisee, LevelCertificate
 from ..academy.models import CompetitionStudent, Competition
@@ -12,7 +13,6 @@ from .utils import get_current_franchise
 
 class StudentForm(BaseForm):
     s_id = ModelField(placeholder="Student ID", required=True, required_msg="This field is required")
-    franchise = ModelField(placeholder="Franchise", required=True, required_msg="This field is required")
     name = ModelField(placeholder="Name", required=True, required_msg="This field is required")
     photo = ModelField(placeholder="Upload Photo", required=True, required_msg="This field is required")
     course = ModelField(placeholder="Course", required=True, required_msg="This field is required")
@@ -41,7 +41,6 @@ class StudentForm(BaseForm):
         model = Student
         title = 'Add New Student'
         order = ['s_id', 
-            'franchise', 
             'name', 
             'photo', 
             'course', 
@@ -66,7 +65,94 @@ class StudentForm(BaseForm):
             'course_start_date', 
             'dropped']
         
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if commit:
+            instance.franchise = get_current_franchise()
+            instance.save()
+        return instance
     
+
+class CourseStartDateForm(BaseSimpleForm):
+    course_start_date = CustomSchemaField(required=True,
+        schema={
+           
+                    "title": "Course start date",
+                    "type": "string",
+                    "default": ""
+                
+            
+        },
+        ui_schema={
+                    "ui:placeholder": "Course Start Date",
+                    "ui:syncEnabled": "false",
+                    "ui:autocomplete": {},
+                    "ui:errorMessages": {},
+                    "ui:widget": "DatePickerFieldWidget",
+                    "ui:options": {
+                        "dateFormat": "%d/%m/%Y"
+                    }
+                    })
+    students = CustomSchemaField(required=True,
+        schema={
+                    "title": 'Students',
+                    "type": 'array',
+                    "uniqueItems":True,
+                    "items": {
+                        "type": 'string',
+                    },
+                    # "required":['service_type', 'This field is required.'],
+                },
+        ui_schema={
+                    "ui:widget": "SelectFieldWidget",
+                    "ui:options": { "multiple": "true" },
+                    "ui:placeholder": "Select Student",
+                    "ui:errorMessages": {
+                        "required": "This field is required."
+                        }
+                    }
+    )
+
+    class Meta:
+        title="Course Start Date Form"
+
+
+    def __init__(self, *args, **kwargs):
+        super(CourseStartDateForm, self).__init__(*args, **kwargs)
+        self.update = False
+        instance = kwargs.get("instance")
+        franchise = get_current_franchise()
+
+        # Fetch students of the current franchise
+        students = Student.objects.filter(franchise=franchise)
+        
+        # Update the schema to include default, enum, and enumNames values
+        self.custom_schema_fields["students"].schema["items"]["enum"] = [str(student.pk) for student in students]
+        self.custom_schema_fields["students"].schema["items"]["enumNames"] = [student.name for student in students]
+        
+        if instance is not None:
+            self.update = True
+
+    def save(self, commit=True):
+        students = self.data.getlist("students")
+        # course_start_date = self.data.get("course_start_date")["course_start_date"]
+        
+        # Convert the course start date from string to date object if necessary
+        # course_start_date = timezone.datetime.strptime(course_start_date, "%d/%m/%Y").date()
+
+        # Update each selected student's course start date
+        for student_id in students:
+            student = Student.objects.get(pk=int(student_id))
+            student.course_start_date = self.data.get("course_start_date")
+            student.save()
+
+        
+
+
+
+  
+    
+
 
 class StudentLevelForm(BaseForm):
     course = ModelField(placeholder='Course', required=True, required_msg="This field is required")

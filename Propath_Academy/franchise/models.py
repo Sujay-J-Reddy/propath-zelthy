@@ -79,8 +79,11 @@ class Student(DynamicModelBase):
     standard = models.CharField(max_length=50, null=True)
     num_siblings = models.IntegerField(null=True)
     join_date = models.DateField(auto_now_add=True)
-    course_start_date = models.DateField(null=True)
+    course_start_date = models.DateField(blank=True, null=True)
     dropped = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.s_id} - {self.name}"
 
 class LevelCertificate(DynamicModelBase):
     student = ZForeignKey(Student,on_delete=models.CASCADE)
