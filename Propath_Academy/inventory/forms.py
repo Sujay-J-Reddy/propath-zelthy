@@ -1,4 +1,7 @@
 import json
+
+from ..franchise.utils import get_current_franchise
+from zelthy.core.utils import get_current_request
 from ..packages.crud.forms import BaseForm
 from ..packages.crud.form_fields import ModelField, CustomSchemaField
 from .models import Vendor, Item, Kit, Log, Order, SchoolOrder
@@ -136,8 +139,7 @@ class LogForm(BaseForm):
                 log_item.save()
             instance.save()
         return instance
-
-
+    
 class OrderForm(BaseForm):
     order_items = CustomSchemaField(
         required=False,
@@ -154,7 +156,7 @@ class OrderForm(BaseForm):
                     "item_qty": {
                         "type": "string",
                         "title": "Quantity",
-                        "default": "0"
+                        
                     }
                 }
             }
@@ -198,7 +200,7 @@ class OrderForm(BaseForm):
                     "kit_qty": {
                         "type": "string",
                         "title": "Quantity",
-                        "default": "0"
+                    
                     }
                 }
             }
@@ -256,11 +258,12 @@ class OrderForm(BaseForm):
     def save(self, commit=True):
         instance = super().save(commit=False)
         order_items = self.data.get("order_items")
+        franchise = get_current_franchise()
         kits = self.data.get("kits")
         if commit:
             instance.items = order_items
             instance.kits = kits
-            instance.franchise_id=1
+            instance.franchise_id=franchise.id
             instance.save()
             franchise = Franchisee.objects.get(pk=instance.franchise_id)
             Notification.objects.create(

@@ -13,6 +13,18 @@
       }
     },
     {
+      "name": "CourseViewAccess",
+      "description": "Courses policy",
+      "statement": {
+        "permissions": [
+          {
+            "name": "landing.views.CoursesView",
+            "type": "view"
+          }
+        ]
+      }
+    },
+    {
       "name": "EnquiryViewAccess",
       "description": "Enquiry policy",
       "statement": {

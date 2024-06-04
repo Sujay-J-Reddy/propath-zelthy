@@ -4,6 +4,8 @@ from zelthy.apps.dynamic_models.fields import ZForeignKey
 from zelthy.core.storage_utils import ZFileField
 from ..franchise.models import Student, Franchisee
 from ..teacher.models import Teacher
+from django.db.models.signals import post_init
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -93,3 +95,9 @@ class Event(DynamicModelBase):
     date = models.DateField()
     photo = ZFileField()
     details = models.TextField()
+
+class Stat(DynamicModelBase):
+    students = models.PositiveIntegerField()
+    teachers = models.PositiveIntegerField()
+    franchises = models.PositiveIntegerField()
+

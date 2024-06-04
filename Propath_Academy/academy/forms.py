@@ -1,6 +1,6 @@
 from ..packages.crud.forms import BaseForm
 from ..packages.crud.form_fields import ModelField, CustomSchemaField
-from .models import Competition, CompetitionResult, School, SchoolStudent, Event
+from .models import Competition, CompetitionResult, School, SchoolStudent, Event, Stat
 from ..notifications.models import Notification
 from django import forms
 
@@ -100,26 +100,6 @@ class SchoolStudentForm(BaseForm):
     level = ModelField(placeholder="Level", required=True, required_msg="This field is required")
     dob = ModelField(placeholder="Dob", required=True, required_msg="This field is required")
     contact = ModelField(placeholder="Contact", required=True, required_msg="This field is required")
-    # school_names = CustomSchemaField(
-    #     required=True,
-    #     schema={
-    #         "type": "string",
-    #         "title": "School",
-    #                         },
-    #     ui_schema={
-            
-         
-    #       "ui:tooltip": "School Name",
-    #       "ui:classNames": "col-span-12 sm:col-span-6",
-    #       "ui:widget": "select",
-    #       "ui:placeholder": "Choose a School",
-    #       "ui:errorMessages": {
-    #         "required": "This field is required."
-    #       }
-        
-      
-    #     }
-    # )
     class Meta:
         model = SchoolStudent
         title = "School Student Details"
@@ -133,15 +113,16 @@ class SchoolStudentForm(BaseForm):
             "contact"
         ]
 
-    # def __init__(self, *args, **kwargs):
-    #     super(SchoolStudentForm, self).__init__(*args, **kwargs)
-    #     instance = kwargs.get("instance")
-    #     schools = [str(school.pk) for school in School.objects.all()]
-    #     self.custom_schema_fields["school_names"].schema["enum"] = schools
-    #     self.custom_schema_fields["school_names"].schema["enumNames"] = [obj.name for obj in School.objects.all()]
-    #     if instance is not None:
-    #         self.update = True
-    #         items = School.objects.all().values_list("id")
-    #         self.custom_schema_fields["school_names"].schema["enum"] = schools
-    #         self.custom_schema_fields["school_names"].schema["enumOptions"] = [obj.name for obj in School.objects.all().values_list("name")]
-        
+class StatForm(BaseForm):
+    students = ModelField(placeholder="Number of Students", required=False)
+    teachers = ModelField(placeholder="Number of Teachers", required=False)
+    franchises = ModelField(placeholder="Number of Franchisees", required=False)
+
+    class Meta:
+        model = Stat
+        title ="Stats Form"
+        order = [
+            "students",
+            "teachers",
+            "franchises"
+        ]

@@ -95,6 +95,18 @@
           }
         ]
       }
+    },
+    {
+      "name": "StatView",
+      "description": "Stats on website",
+      "statement": {
+        "permissions": [
+          {
+            "name": "academy.views.StatCrudView",
+            "type": "view"
+          }
+        ]
+      }
     }
   ]
 }

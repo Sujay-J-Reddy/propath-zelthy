@@ -1,8 +1,8 @@
 from django.db.models import Q
 from ..packages.crud.table.base import ModelTable
 from ..packages.crud.table.column import ModelCol, StringCol
-from .models import Competition, CompetitionResult, CompetitionStudent, School, SchoolStudent, Enquiry, Event
-from .forms import CompetitionForm, CompetitionResultForm, SchoolForm, SchoolStudentForm, EventForm
+from .models import Competition, CompetitionResult, CompetitionStudent, School, SchoolStudent, Enquiry, Event, Stat
+from .forms import CompetitionForm, CompetitionResultForm, SchoolForm, SchoolStudentForm, EventForm, StatForm
 from ..franchise.forms import CompetitionStudentForm
 from . details import EventDetail, EnquiryDetail, CompetitionDetail, CompetitionResultDetail, SchoolDetail, SchoolStudentDetail,CompetitionStudentDetail
 from django.db.models import F, Value, CharField
@@ -48,6 +48,8 @@ class EventTable(ModelTable):
         if search_term is not None:
             return Q(details__contains = search_term)
         return Q()
+    
+    
 
 class EnquiryTable(ModelTable):
     name = ModelCol(display_as="Name", sortable=True, searchable=True)
@@ -251,10 +253,7 @@ class CompetitionStudentTable(ModelTable):
     def student_getval(self, obj):
         return f'{obj.student.s_id} - {obj.student.name}'
     
-    # def get_table_data_queryset(self):
-    #     query = CompetitionStudent.objects.values('competition', 'franchise', 'date', 'modified_at', 'created_at').distinct()
-    #     print(query, flush=True)
-    #     return query
+
     def get_table_data_queryset(self):
         queryset= super().get_table_data_queryset()
         distinct_combinations =  queryset.order_by('franchise', 'competition').distinct('franchise','competition')
@@ -407,5 +406,28 @@ class SchoolStudentTable(ModelTable):
             return Q(contact__contains=search_term)
         return Q()
 
-    
- 
+class StatTable(ModelTable):
+    students = ModelCol(display_as="Students",searchable=False,sortable=False)
+    teachers = ModelCol(display_as="Teachers",searchable=False,sortable=False)
+    franchises = ModelCol(display_as="Franchises",searchable=False,sortable=False)
+    table_actions = []
+    row_actions = [
+        {
+            "name": "Edit",
+            "key": "edit",
+            "description": "Edit Stats",
+            "type": "form",
+            "form": StatForm,  # Specify the form to use for editing
+            "roles": [
+                "Admin"
+            ],  # Specify roles that can perform the action
+        }
+    ]
+
+    class Meta:
+        model = Stat
+        fields = [
+            "students",
+            "teachers",
+            "franchises"
+        ]

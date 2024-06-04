@@ -6,6 +6,7 @@ from .forms import TeacherForm, TeacherLevelForm
 from .utils import get_current_teacher
 from zelthy.core.utils import get_current_role
 from ..franchise.utils import get_current_franchise
+from .details import TeacherDetail, InstructorFeedbackDetail
 
 class TeacherTable(ModelTable):
     name = ModelCol(display_as="Name", sortable=True, searchable=True)
@@ -47,6 +48,7 @@ class TeacherTable(ModelTable):
 
     class Meta:
         model = Teacher
+        detail_class = TeacherDetail
         fields = [
             "name",
             "photo",
@@ -82,8 +84,10 @@ class TeacherTable(ModelTable):
     def get_table_data_queryset(self):
         queryset = super().get_table_data_queryset()
         role = get_current_role()
-        if role.name == 'teacher':
-            return queryset.filter(name=get_current_teacher().name)
+        if role.name == 'Teacher':
+            return queryset.filter(id=get_current_teacher().id)   
+        elif role.name == 'Franchisee':
+            return queryset.filter(franchise__id=get_current_franchise().id)
         else:
             return queryset
         
@@ -162,6 +166,7 @@ class InstructorFeedbackTable(ModelTable):
 
     class Meta:
         model = InstructorFeedback
+        detail_class = InstructorFeedbackDetail
         fields = [
             "teacher",
             "completed_level",
@@ -178,13 +183,17 @@ class InstructorFeedbackTable(ModelTable):
             "date",
         ]
 
+
+    def teacher_getval(self, obj):
+        return obj.teacher.name
+
     def get_table_data_queryset(self):
         queryset = super().get_table_data_queryset()
         role = get_current_role()
-        if role.name == 'teacher':
-            return queryset.filter(name=get_current_teacher().name)
-        elif role.name == 'franchise':
-            return queryset.filter(franchise=get_current_franchise())
+        if role.name == 'Teacher':
+            return queryset.filter(teacher__id=get_current_teacher().id)
+        elif role.name == 'Franchisee':
+            return queryset.filter(teacher__franchise__id=get_current_franchise().id)
         return queryset
 
     def teacher_Q_obj(self, search_term):

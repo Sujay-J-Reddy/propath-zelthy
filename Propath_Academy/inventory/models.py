@@ -30,8 +30,8 @@ class Kit(DynamicModelBase):
 class Item(DynamicModelBase):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField()
-    qty = models.PositiveIntegerField(default=0)
-    last_purchase_price = models.PositiveIntegerField(default=0)
+    qty = models.PositiveIntegerField()
+    last_purchase_price = models.PositiveIntegerField()
     kit = ZForeignKey(Kit, on_delete=models.SET_NULL, null=True,blank=True, related_name='kit_name')
 
 class Log(DynamicModelBase):

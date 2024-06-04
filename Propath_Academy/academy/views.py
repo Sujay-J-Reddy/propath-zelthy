@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 from ..packages.frame.decorator import add_frame_context
 from ..packages.crud.base import BaseCrudView
-from .tables import CompetitionTable, CompetitionResultTable, CompetitionStudentTable, SchoolTable, SchoolStudentTable, EnquiryTable, EventTable
-from .forms import CompetitionForm, CompetitionResultForm, SchoolForm, SchoolStudentForm, EventForm
+from .tables import CompetitionTable, CompetitionResultTable, CompetitionStudentTable, SchoolTable, SchoolStudentTable, EnquiryTable, EventTable, StatTable
+from .forms import CompetitionForm, CompetitionResultForm, SchoolForm, SchoolStudentForm, EventForm, StatForm
 from ..franchise.forms import CompetitionStudentForm
 from zelthy.core.utils import get_current_role
 from django.shortcuts import render
@@ -12,8 +12,7 @@ from ..franchise.models import Franchisee, Student
 from ..teacher.models import Teacher
 from ..notifications.models import Notification
 from ..landing.forms import EnquiryForm
-# class LandingView(TemplateView):
-#     template_name = 'academy/landing.html'
+
     
 class EnquiryDataView(BaseCrudView):
     page_title = "Enquiries"
@@ -26,6 +25,7 @@ class EnquiryDataView(BaseCrudView):
     
     def display_add_button_check(self, request):
         return False
+    
 class EventCrudView(BaseCrudView):
     page_title = "Events"
     add_btn_title = "Add Event"
@@ -94,6 +94,19 @@ class SchoolStudentCrudView(BaseCrudView):
 
     def display_add_button_check(self, request):
         return get_current_role().name in [ 'Admin']
+    
+class StatCrudView(BaseCrudView):
+    page_title = "Stats Page"
+    add_btn_title = "Add Stat"
+    table = StatTable
+    form = StatForm
+
+    def has_add_perm(self, request):
+        return False
+    
+    def display_add_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
+    
 
 
 def check_birthdays(request, *args, **kwargs):
