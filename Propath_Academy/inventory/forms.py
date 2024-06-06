@@ -64,6 +64,10 @@ class LogForm(BaseForm):
             "title": "Menu",
             "items": {
                 "type": "object",
+                "required": [
+                    "item",
+                    "qty"
+                ],
                 "properties": {
                     "item": {
                         "type": "string",
@@ -72,7 +76,7 @@ class LogForm(BaseForm):
                     "qty": {
                         "type": "string",
                         "title": "Quantity",
-                        "default": "0"
+                    
                     },
             }
         }
@@ -127,6 +131,8 @@ class LogForm(BaseForm):
         vendor = self.data.get("vendor")
         supply_items = self.data.get("supply_items")
         if commit:
+            if supply_items is None:
+                return instance
             instance.vendor_id = int(vendor)
             instance.items = supply_items
             item_info = json.loads(supply_items)
@@ -148,6 +154,10 @@ class OrderForm(BaseForm):
             "title": "Items",
             "items": {
                 "type": "object",
+                "required": [
+                    "item",
+                    "item_qty"
+                ],
                 "properties": {
                     "item": {
                         "type": "string",
@@ -192,6 +202,10 @@ class OrderForm(BaseForm):
             "title": "Kits",
             "items": {
                 "type": "object",
+                "required": [
+                    "kit",
+                    "kit_qty"
+                ],
                 "properties": {
                     "kit": {
                         "type": "string",
@@ -261,6 +275,8 @@ class OrderForm(BaseForm):
         franchise = get_current_franchise()
         kits = self.data.get("kits")
         if commit:
+            if order_items is None and kits is None:
+                return instance
             instance.items = order_items
             instance.kits = kits
             instance.franchise_id=franchise.id

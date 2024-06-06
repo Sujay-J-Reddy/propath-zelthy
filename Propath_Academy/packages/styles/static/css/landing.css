@@ -17,7 +17,6 @@
   background-color: rgb(225, 214, 174);
   height: 50px;
   font-size: 25px;
-  text-align: center;
   position: sticky;
   top: 0;
   z-index: 2;
@@ -35,10 +34,14 @@
   text-decoration: none;
   color: black;
   border-radius: 25px;
-  padding: 2px 15px;
+  padding: 5px 15px;
   background-color: rgb(235, 235, 208);
   position: relative;
   top: 15%;
+}
+
+.last-item {
+  margin-right: 750px;
 }
 
 .signin-btn:hover {
@@ -335,6 +338,10 @@ footer {
   justify-items: center;
 }
 
-.event-img {
-  height: 200px;
+.standard-carousel-image {
+  width: 100%;
+  height: auto;
+  max-width: 1000px;
+  max-height: 600px;
+  object-fit: cover;
 }
