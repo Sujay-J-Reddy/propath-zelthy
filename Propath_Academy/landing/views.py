@@ -37,6 +37,7 @@ class LandingView(TemplateView):
 
         return context
 
+
 class CoursesView(TemplateView):
     template_name = 'landing/courses.html'
 
