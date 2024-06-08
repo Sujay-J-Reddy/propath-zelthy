@@ -107,7 +107,7 @@
                 <div class="carousel-inner">
                     <div class="carousel-item active">
                         {% if event1.photo %}
-                        <img src="/media/{{ event1.photo }}" class="d-block w-100 standard-carousel-image img-fluid"
+                        <img src="{{ event1.photo }}" class="d-block w-100 standard-carousel-image img-fluid"
                             alt="Event Photo" height="60%" width="40%">
                         {% else %}
                         <img src="{{ default_photo_url }}" class="d-block w-100 standard-carousel-image img-fluid"
