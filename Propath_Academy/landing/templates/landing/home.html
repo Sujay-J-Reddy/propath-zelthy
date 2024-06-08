@@ -106,13 +106,9 @@
                 </div>
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        {% if event1.photo %}
-                        <img src="{{ event1.photo.url }}" class="d-block w-100 standard-carousel-image img-fluid"
-                            alt="Event Photo" height="60%" width="40%">
-                        {% else %}
-                        <img src="{{ default_photo_url }}" class="d-block w-100 standard-carousel-image img-fluid"
-                            alt="Event Photo" height="60%" width="40%">
-                        {% endif %}
+                        <img src="{{ event1.photo.url | default: default_photo_url }}"
+                            class="d-block w-100 standard-carousel-image img-fluid" alt="Event Photo" height="60%"
+                            width="40%">
                         <div class="carousel-caption d-none d-md-block">
                             <h5 class="carousel-title">{{event1.name}}</h5>
                             <p class="carousel-details">{{event1.details}}</p>
@@ -120,13 +116,9 @@
                         </div>
                     </div>
                     <div class="carousel-item ">
-                        {% if event2.photo %}
-                        <img src="/media/{{ event2.photo.url }}" class="d-block w-100 standard-carousel-image img-fluid"
-                            alt="Event Photo" height="60%" width="40%">
-                        {% else %}
-                        <img src="{{ default_photo_url }}" class="d-block w-100 standard-carousel-image img-fluid"
-                            alt="Event Photo" height="60%" width="40%">
-                        {% endif %}
+                        <img src="{{ event2.photo.url | default: default_photo_url }}"
+                            class="d-block w-100 standard-carousel-image img-fluid" alt="Event Photo" height="60%"
+                            width="40%">
                         <div class="carousel-caption d-none d-md-block">
                             <h5 class="carousel-title">{{event2.name}}</h5>
                             <p class="carousel-details">{{event2.details}}</p>
@@ -134,13 +126,9 @@
                         </div>
                     </div>
                     <div class="carousel-item ">
-                        {% if event3.photo %}
-                        <img src="/media/{{ event3.photo }}" class="d-block w-100 standard-carousel-image img-fluid"
-                            alt="Event Photo" height="60%" width="40%">
-                        {% else %}
-                        <img src="{{ default_photo_url }}" class="d-block w-100 standard-carousel-image img-fluid"
-                            alt="Event Photo" height="60%" width="40%">
-                        {% endif %}
+                        <img src="{{ event3.photo.url | default: default_photo_url }}"
+                            class="d-block w-100 standard-carousel-image img-fluid" alt="Event Photo" height="60%"
+                            width="40%">
                         <div class="carousel-caption d-none d-md-block">
                             <h5 class="carousel-title">{{event3.name}}</h5>
                             <p class="carousel-details">{{event3.details}}</p>
