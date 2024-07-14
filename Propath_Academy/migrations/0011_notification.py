@@ -3,7 +3,7 @@
 from django.db import migrations, models
 import django.db.models.deletion
 import uuid
-import zelthy.apps.dynamic_models.fields
+import zango.apps.dynamic_models.fields
 
 
 class Migration(migrations.Migration):
@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 ('details', models.TextField(blank=True, default='Details Not Available')),
                 ('date', models.DateTimeField(auto_now_add=True)),
                 ('created_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
-                ('franchise', zelthy.apps.dynamic_models.fields.ZForeignKey(null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='dynamic_models.franchisee')),
+                ('franchise', zango.apps.dynamic_models.fields.ZForeignKey(null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='dynamic_models.franchisee')),
                 ('modified_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
             ],
             options={

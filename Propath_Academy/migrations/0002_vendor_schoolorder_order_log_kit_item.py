@@ -3,7 +3,7 @@
 from django.db import migrations, models
 import django.db.models.deletion
 import uuid
-import zelthy.apps.dynamic_models.fields
+import zango.apps.dynamic_models.fields
 
 
 class Migration(migrations.Migration):
@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
                 ('order_date', models.DateField(auto_now_add=True)),
                 ('created_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
                 ('modified_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
-                ('school', zelthy.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='dynamic_models.school')),
+                ('school', zango.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='dynamic_models.school')),
             ],
             options={
                 'abstract': False,
@@ -62,7 +62,7 @@ class Migration(migrations.Migration):
                 ('delivery_date', models.DateField()),
                 ('completed', models.BooleanField(default=False)),
                 ('created_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
-                ('franchise', zelthy.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.franchisee')),
+                ('franchise', zango.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.franchisee')),
                 ('modified_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
             ],
             options={
@@ -80,7 +80,7 @@ class Migration(migrations.Migration):
                 ('date', models.DateField(auto_now_add=True)),
                 ('created_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
                 ('modified_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
-                ('vendor', zelthy.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='vendor', to='dynamic_models.vendor')),
+                ('vendor', zango.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='vendor', to='dynamic_models.vendor')),
             ],
             options={
                 'abstract': False,
@@ -113,7 +113,7 @@ class Migration(migrations.Migration):
                 ('qty', models.PositiveIntegerField(default=0)),
                 ('last_purchase_price', models.PositiveIntegerField(default=0)),
                 ('created_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
-                ('kit', zelthy.apps.dynamic_models.fields.ZForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='kit_name', to='dynamic_models.kit')),
+                ('kit', zango.apps.dynamic_models.fields.ZForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='kit_name', to='dynamic_models.kit')),
                 ('modified_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
             ],
             options={

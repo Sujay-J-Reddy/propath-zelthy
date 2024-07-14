@@ -2,7 +2,7 @@
 
 from django.db import migrations
 import django.db.models.deletion
-import zelthy.apps.dynamic_models.fields
+import zango.apps.dynamic_models.fields
 
 
 class Migration(migrations.Migration):
@@ -15,11 +15,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='item',
             name='kit',
-            field=zelthy.apps.dynamic_models.fields.ZForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='kit_name', to='dynamic_models.kit'),
+            field=zango.apps.dynamic_models.fields.ZForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='kit_name', to='dynamic_models.kit'),
         ),
         migrations.AlterField(
             model_name='notification',
             name='franchise',
-            field=zelthy.apps.dynamic_models.fields.ZForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='dynamic_models.franchisee'),
+            field=zango.apps.dynamic_models.fields.ZForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='dynamic_models.franchisee'),
         ),
     ]
