@@ -6,8 +6,8 @@ from django.views.generic import TemplateView
 
 from rest_framework.views import APIView
 
-from zelthy.core.api import get_api_response
-from zelthy.apps.appauth.models import UserRoleModel
+from zango.core.api import get_api_response
+from zango.apps.appauth.models import UserRoleModel
 
 from .serializers import LoginConfigModelSerializer
 from .models import LoginConfigModel, GenericLoginConfigModel

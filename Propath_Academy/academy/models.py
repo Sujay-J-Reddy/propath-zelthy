@@ -1,7 +1,7 @@
 from django.db import models
-from zelthy.apps.dynamic_models.models import DynamicModelBase
-from zelthy.apps.dynamic_models.fields import ZForeignKey
-from zelthy.core.storage_utils import ZFileField
+from zango.apps.dynamic_models.models import DynamicModelBase
+from zango.apps.dynamic_models.fields import ZForeignKey
+from zango.core.storage_utils import ZFileField
 from ..franchise.models import Student, Franchisee
 from ..teacher.models import Teacher
 from django.db.models.signals import post_init

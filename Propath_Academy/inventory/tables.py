@@ -5,7 +5,7 @@ from .forms import KitForm, VendorForm, ItemForm, LogForm, OrderForm, SchoolOrde
 from .models import Kit, Vendor, Item, Log, Order, SchoolOrder
 from .details import OrderDetail, SchoolOrderDetail, LogDetail, KitDetail, ItemDetail, OrderDetail
 from .utils import json_to_html_table
-from zelthy.core.utils import get_current_role
+from zango.core.utils import get_current_role
 from ..franchise.utils import get_current_franchise
 
 class KitTable(ModelTable):

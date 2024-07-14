@@ -1,5 +1,5 @@
-from zelthy.apps.appauth.models import UserRoleModel
-from zelthy.core.utils import get_datetime_str_in_tenant_timezone
+from zango.apps.appauth.models import UserRoleModel
+from zango.core.utils import get_datetime_str_in_tenant_timezone
 
 
 def get_user_profile(request, user_role):

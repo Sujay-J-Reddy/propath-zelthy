@@ -25,8 +25,8 @@ def export_table(request_data, export_job_id):
     from django.http import HttpRequest
     from django.db import connection
 
-    from zelthy.apps.dynamic_models.workspace.base import Workspace
-    from zelthy.apps.appauth.models import AppUserModel, UserRoleModel
+    from zango.apps.dynamic_models.workspace.base import Workspace
+    from zango.apps.appauth.models import AppUserModel, UserRoleModel
 
     from ....packages.frame.downloads.models import ExportJob
 

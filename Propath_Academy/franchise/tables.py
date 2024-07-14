@@ -6,7 +6,7 @@ from .models import Franchisee, Student, LevelCertificate
 from .forms import FranchiseeForm, StudentForm, StudentLevelForm
 from .details import FranchiseDetail, LevelCertificateDetail, StudentDetail
 from ..franchise.utils import get_current_franchise
-from zelthy.core.utils import get_current_role
+from zango.core.utils import get_current_role
 
 class FranchiseeTable(ModelTable):
     id = ModelCol(display_as="ID", sortable=True, searchable=True)

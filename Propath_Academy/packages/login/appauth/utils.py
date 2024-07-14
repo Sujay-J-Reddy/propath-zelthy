@@ -5,12 +5,12 @@ from django.core.exceptions import ImproperlyConfigured
 
 from formtools.wizard.views import SessionWizardView
 
-from zelthy.apps.appauth.models import UserRoleModel
+from zango.apps.appauth.models import UserRoleModel
 
 from .base import ZelthyLoginBase
 
 
-USER_AUTH_BACKEND = "zelthy.apps.appauth.auth_backend.AppUserModelBackend"
+USER_AUTH_BACKEND = "zango.apps.appauth.auth_backend.AppUserModelBackend"
 
 
 class ZelthyLoginView(ZelthyLoginBase, SessionWizardView):

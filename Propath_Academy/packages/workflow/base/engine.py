@@ -1,9 +1,9 @@
 import copy
 import json
 
-from zelthy.core.api import get_api_response
-from zelthy.core.utils import get_datetime_str_in_tenant_timezone
-from zelthy.core.utils import get_current_role
+from zango.core.api import get_api_response
+from zango.core.utils import get_datetime_str_in_tenant_timezone
+from zango.core.utils import get_current_role
 
 
 from .models import WorkflowTransaction, WorkflowFile, WorkflowTransactionFile

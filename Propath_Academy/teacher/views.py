@@ -1,7 +1,7 @@
 from ..packages.crud.base import BaseCrudView
 from .tables import TeacherTable, InstructorFeedbackTable
 from .forms import TeacherForm, TeacherLevelForm, InstructorFeedbackForm
-from zelthy.core.utils import get_current_role
+from zango.core.utils import get_current_role
 
 class TeacherCrudView(BaseCrudView):
     page_title = "Teachers"

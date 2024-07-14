@@ -2,7 +2,7 @@ from ..packages.crud.base import BaseCrudView
 from .tables import KitTable, VendorTable, ItemTable, LogTable, OrderTable, SchoolOrderTable
 from .forms import KitForm, VendorForm, ItemForm, LogForm, OrderForm, SchoolOrderForm
 from .workflow import OrderWorkflow, SchoolOrderWorkflow
-from zelthy.core.utils import get_current_role
+from zango.core.utils import get_current_role
 
 class SchoolOrderCrudView(BaseCrudView):
     page_title = "School Order"

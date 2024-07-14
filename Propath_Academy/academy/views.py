@@ -4,7 +4,7 @@ from ..packages.crud.base import BaseCrudView
 from .tables import CompetitionTable, CompetitionResultTable, CompetitionStudentTable, SchoolTable, SchoolStudentTable, EnquiryTable, EventTable, StatTable
 from .forms import CompetitionForm, CompetitionResultForm, SchoolForm, SchoolStudentForm, EventForm, StatForm
 from ..franchise.forms import CompetitionStudentForm
-from zelthy.core.utils import get_current_role
+from zango.core.utils import get_current_role
 from django.shortcuts import render
 from django.views.generic import TemplateView, FormView
 from datetime import datetime
@@ -81,6 +81,9 @@ class SchoolCrudView(BaseCrudView):
         return True
 
     def display_add_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
+    
+    def display_download_button_check(self, request):
         return get_current_role().name in [ 'Admin']
     
 class SchoolStudentCrudView(BaseCrudView):

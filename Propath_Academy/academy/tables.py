@@ -7,7 +7,7 @@ from ..franchise.forms import CompetitionStudentForm
 from . details import EventDetail, EnquiryDetail, CompetitionDetail, CompetitionResultDetail, SchoolDetail, SchoolStudentDetail,CompetitionStudentDetail
 from django.db.models import F, Value, CharField
 from django.db.models.functions import Concat
-from zelthy.core.utils import get_current_role
+from zango.core.utils import get_current_role
 from ..franchise.utils import get_current_franchise
 
 class EventTable(ModelTable):
@@ -321,6 +321,7 @@ class SchoolTable(ModelTable):
             return Q(location__contains=search_term)
         return Q()
 
+    
     
     def can_perform_row_action_edit(self, request, obj):
         # Implement logic to check if the user can perform the Edit action

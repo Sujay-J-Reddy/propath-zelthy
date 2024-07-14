@@ -3,8 +3,8 @@
 from django.db import migrations, models
 import django.db.models.deletion
 import uuid
-import zelthy.apps.dynamic_models.fields
-import zelthy.core.storage_utils
+import zango.apps.dynamic_models.fields
+import zango.core.storage_utils
 
 
 class Migration(migrations.Migration):
@@ -38,11 +38,11 @@ class Migration(migrations.Migration):
                 ("filename", models.CharField(blank=True, max_length=255, null=True)),
                 (
                     "file",
-                    zelthy.core.storage_utils.ZFileField(
+                    zango.core.storage_utils.ZFileField(
                         blank=True,
                         null=True,
-                        upload_to=zelthy.core.storage_utils.RandomUniqueFileName,
-                        validators=[zelthy.core.storage_utils.validate_file_extension],
+                        upload_to=zango.core.storage_utils.RandomUniqueFileName,
+                        validators=[zango.core.storage_utils.validate_file_extension],
                     ),
                 ),
                 ("export_metadata", models.JSONField(blank=True, null=True)),
@@ -90,7 +90,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "user",
-                    zelthy.apps.dynamic_models.fields.ZForeignKey(
+                    zango.apps.dynamic_models.fields.ZForeignKey(
                         blank=True,
                         null=True,
                         on_delete=django.db.models.deletion.PROTECT,

@@ -132,7 +132,7 @@ class CrudRequestMixin(object):
         return action
 
     def get_request_user(seflf, request):
-        from zelthy.core.utils import get_current_role
+        from zango.core.utils import get_current_role
 
         user_role = get_current_role()
         print("user_role: ", user_role)

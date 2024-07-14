@@ -4,9 +4,9 @@ from ..packages.crud.form_fields import ModelField, CustomSchemaField
 from .models import Student, Franchisee, LevelCertificate
 from ..academy.models import CompetitionStudent, Competition
 from ..notifications.models import Notification
-from zelthy.apps.appauth.models import UserRoleModel
-from zelthy.apps.appauth.models import AppUserModel
-from zelthy.core.utils import get_current_request
+from zango.apps.appauth.models import UserRoleModel
+from zango.apps.appauth.models import AppUserModel
+from zango.core.utils import get_current_request
 from .utils import get_current_franchise
     # return Franchisee.objects.get(pk=1)
 

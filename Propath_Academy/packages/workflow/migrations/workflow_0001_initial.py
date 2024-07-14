@@ -5,8 +5,8 @@ import django.contrib.postgres.fields.jsonb
 from django.db import migrations, models
 import django.db.models.deletion
 import uuid
-import zelthy.apps.dynamic_models.fields
-import zelthy.core.storage_utils
+import zango.apps.dynamic_models.fields
+import zango.core.storage_utils
 
 
 class Migration(migrations.Migration):
@@ -36,9 +36,9 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(max_length=255)),
                 (
                     "file",
-                    zelthy.core.storage_utils.ZFileField(
-                        upload_to=zelthy.core.storage_utils.RandomUniqueFileName,
-                        validators=[zelthy.core.storage_utils.validate_file_extension],
+                    zango.core.storage_utils.ZFileField(
+                        upload_to=zango.core.storage_utils.RandomUniqueFileName,
+                        validators=[zango.core.storage_utils.validate_file_extension],
                     ),
                 ),
                 (
@@ -166,14 +166,14 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "workflow_file",
-                    zelthy.apps.dynamic_models.fields.ZForeignKey(
+                    zango.apps.dynamic_models.fields.ZForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
                         to="dynamic_models.workflowfile",
                     ),
                 ),
                 (
                     "workflow_transaction",
-                    zelthy.apps.dynamic_models.fields.ZForeignKey(
+                    zango.apps.dynamic_models.fields.ZForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
                         to="dynamic_models.workflowtransaction",
                     ),

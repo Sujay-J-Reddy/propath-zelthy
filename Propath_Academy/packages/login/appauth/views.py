@@ -1,13 +1,13 @@
 import json
 import requests
 
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.cache import never_cache
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
 
-from zelthy.apps.appauth.models import UserRoleModel
-from zelthy.apps.shared.tenancy.models import ThemesModel
-from zelthy.core.utils import get_package_url
+from zango.apps.appauth.models import UserRoleModel
+from zango.apps.shared.tenancy.models import ThemesModel
+from zango.core.utils import get_package_url
 
 from .utils import ZelthyLoginView
 
@@ -20,7 +20,7 @@ from .forms import (
 from ..configure.models import LoginConfigModel, GenericLoginConfigModel
 
 
-@method_decorator(csrf_exempt, name="dispatch")
+@method_decorator(never_cache, name="dispatch")
 class AppUserLoginView(ZelthyLoginView):
     """
     View to render the login page html.

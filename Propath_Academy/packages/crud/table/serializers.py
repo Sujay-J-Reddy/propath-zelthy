@@ -6,9 +6,9 @@ from django.db import connection
 from rest_framework import serializers
 from rest_framework.serializers import SerializerMetaclass
 
-from zelthy.core.utils import get_current_request
-from zelthy.core.storage_utils import ZFileField
-from zelthy.apps.dynamic_models.fields import ZForeignKey, ZOneToOneField
+from zango.core.utils import get_current_request
+from zango.core.storage_utils import ZFileField
+from zango.apps.dynamic_models.fields import ZForeignKey, ZOneToOneField
 
 
 class StringRelatedMeta(SerializerMetaclass):

@@ -2,31 +2,61 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import zelthy.apps.dynamic_models.fields
+import zango.apps.dynamic_models.fields
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('appauth', '0002_default_user_roles'),
+        ("appauth", "0002_default_user_roles"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='FramesModel',
+            name="FramesModel",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('modified_at', models.DateTimeField(auto_now=True)),
-                ('config', models.JSONField()),
-                ('created_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
-                ('modified_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
-                ('user_role', zelthy.apps.dynamic_models.fields.ZOneToOneField(on_delete=django.db.models.deletion.PROTECT, related_name='frame', to='appauth.userrolemodel')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("modified_at", models.DateTimeField(auto_now=True)),
+                ("config", models.JSONField()),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        editable=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="appauth.appusermodel",
+                    ),
+                ),
+                (
+                    "modified_by",
+                    models.ForeignKey(
+                        editable=False,
+                        null=True,
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="appauth.appusermodel",
+                    ),
+                ),
+                (
+                    "user_role",
+                    zango.apps.dynamic_models.fields.ZOneToOneField(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="frame",
+                        to="appauth.userrolemodel",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
     ]

@@ -4,9 +4,9 @@ import requests
 
 from rest_framework import serializers
 
-from zelthy.core.api import get_api_response
-from zelthy.core.utils import get_datetime_str_in_tenant_timezone
-from zelthy.core.utils import get_package_url
+from zango.core.api import get_api_response
+from zango.core.utils import get_datetime_str_in_tenant_timezone
+from zango.core.utils import get_package_url
 
 from ..mixin import CrudRequestMixin
 from ..table.column import ModelCol, SelectCol, StringCol, NumericCol
@@ -358,9 +358,9 @@ class BaseDetail(CrudRequestMixin):
         item_details["configurations"] = self.get_detail_view_config(obj)
         item_details["telephony_details"] = {}
         if self.call_enabled():
-            item_details["telephony_details"]["phone_number"] = (
-                self.get_telephony_contact(obj)
-            )
+            item_details["telephony_details"][
+                "phone_number"
+            ] = self.get_telephony_contact(obj)
             item_details["telephony_details"]["call_enabled"] = True
         return item_details
 

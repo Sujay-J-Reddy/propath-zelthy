@@ -1,4 +1,4 @@
-from zelthy.core.utils import get_current_role
+from zango.core.utils import get_current_role
 from ..packages.crud.base import BaseCrudView, BaseFormOnlyView
 from .tables import FranchiseeTable, StudentTable, LevelCertificateTable
 from .forms import FranchiseeForm, StudentForm, StudentLevelForm, CourseStartDateForm

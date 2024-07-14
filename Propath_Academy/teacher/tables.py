@@ -4,7 +4,7 @@ from django.db.models import Q
 from .models import Teacher, InstructorFeedback
 from .forms import TeacherForm, TeacherLevelForm
 from .utils import get_current_teacher
-from zelthy.core.utils import get_current_role
+from zango.core.utils import get_current_role
 from ..franchise.utils import get_current_franchise
 from .details import TeacherDetail, InstructorFeedbackDetail
 

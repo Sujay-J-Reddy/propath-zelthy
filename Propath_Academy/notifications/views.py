@@ -1,5 +1,5 @@
 from ..packages.crud.base import BaseCrudView
-from zelthy.core.utils import get_current_role
+from zango.core.utils import get_current_role
 from .tables import NotificationTable
 from .forms import NotificationForm
 

@@ -1,7 +1,7 @@
 import json
 
 from ..franchise.utils import get_current_franchise
-from zelthy.core.utils import get_current_request
+from zango.core.utils import get_current_request
 from ..packages.crud.forms import BaseForm
 from ..packages.crud.form_fields import ModelField, CustomSchemaField
 from .models import Vendor, Item, Kit, Log, Order, SchoolOrder

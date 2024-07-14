@@ -1,9 +1,9 @@
 from django.db import models
 
-from zelthy.apps.dynamic_models.models import DynamicModelBase
-from zelthy.apps.dynamic_models.fields import ZForeignKey
-from zelthy.apps.appauth.models import AppUserModel
-from zelthy.core.storage_utils import ZFileField
+from zango.apps.dynamic_models.models import DynamicModelBase
+from zango.apps.dynamic_models.fields import ZForeignKey
+from zango.apps.appauth.models import AppUserModel
+from zango.core.storage_utils import ZFileField
 
 
 class ExportJob(DynamicModelBase):

@@ -2,9 +2,9 @@ from ..packages.crud.forms import BaseForm
 from datetime import datetime, timedelta
 from ..packages.crud.form_fields import ModelField
 from .models import Teacher, InstructorFeedback
-from zelthy.apps.appauth.models import UserRoleModel
-from zelthy.apps.appauth.models import AppUserModel
-from zelthy.core.utils import get_current_request
+from zango.apps.appauth.models import UserRoleModel
+from zango.apps.appauth.models import AppUserModel
+from zango.core.utils import get_current_request
 
 def get_current_teacher():
     req = get_current_request()

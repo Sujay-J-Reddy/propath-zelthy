@@ -1,9 +1,9 @@
 import datetime
 from django.db import models
-from zelthy.apps.dynamic_models.models import DynamicModelBase
-from zelthy.apps.dynamic_models.fields import ZForeignKey, ZOneToOneField
-from zelthy.core.storage_utils import ZFileField
-from zelthy.apps.appauth.models import AppUserModel
+from zango.apps.dynamic_models.models import DynamicModelBase
+from zango.apps.dynamic_models.fields import ZForeignKey, ZOneToOneField
+from zango.core.storage_utils import ZFileField
+from zango.apps.appauth.models import AppUserModel
 
 class Franchisee(DynamicModelBase):
     FRANCHISEE_TYPE_CHOICES = (

@@ -14,11 +14,11 @@ from crispy_forms.layout import (
     Field,
 )
 
-from zelthy.apps.appauth.models import AppUserModel, OldPasswords
-from zelthy.apps.shared.tenancy.models import TenantModel
-from zelthy.api.app_auth.profile.v1.utils import PasswordValidationMixin
-from zelthy.core.utils import get_package_url
-from zelthy.core.package_utils import package_installed
+from zango.apps.appauth.models import AppUserModel, OldPasswords
+from zango.apps.shared.tenancy.models import TenantModel
+from zango.api.app_auth.profile.v1.utils import PasswordValidationMixin
+from zango.core.utils import get_package_url
+from zango.core.package_utils import package_installed
 
 
 class ZelthyAuthenticationForm(AuthenticationForm):
@@ -66,14 +66,13 @@ class LoginForm(ZelthyAuthenticationForm):
         self.helper.field_class = "uk-input-group uk-text-small"
 
 
-
 class AppLoginForm(LoginForm):
     usermodel = AppUserModel
 
     def __init__(self, *args, **kwargs):
         super(AppLoginForm, self).__init__(*args, **kwargs)
-        self.request = self.initial['request']
-        sso_pkg_config = package_installed('sso', self.request.tenant)
+        self.request = self.initial["request"]
+        sso_pkg_config = package_installed("sso", self.request.tenant)
         self.helper = FormHelper()
         self.helper.form_show_labels = False
         layout_list = [
@@ -86,39 +85,40 @@ class AppLoginForm(LoginForm):
 
         saml_div = None
         if sso_pkg_config:
-            self.fields['saml'] = forms.ChoiceField()        
-            self.fields['saml'].required = False
-            self.fields['username'].required = False
-            self.fields['password'].required = False
+            self.fields["saml"] = forms.ChoiceField()
+            self.fields["saml"].required = False
+            self.fields["username"].required = False
+            self.fields["password"].required = False
 
             samls = {}
             url = get_package_url(
-                    self.request,
-                    f"saml/fetch_saml_config/?action=fetch_config",
-                    "sso",    
+                self.request,
+                f"saml/fetch_saml_config/?action=fetch_config",
+                "sso",
             )
             response = requests.get(url)
-            saml_choices = [(0, "Select organization"),]
-            if response.status_code==200:
+            saml_choices = [
+                (0, "Select organization"),
+            ]
+            if response.status_code == 200:
                 samls = response.json().get("response")
             for s in samls:
                 saml_choices.append((s, samls[s]))
             saml_choices = tuple(saml_choices)
-            self.fields['saml'].choices = saml_choices
-            saml_div =  Div(
-                    HTML("""<p style='text-align:center;'>Or</p>"""),
-                    HTML("""<h4>Choose a single sign-on option</h4>"""),            
-                    Field('saml', label="Select organization", css_class='select-style'),          
-                )
+            self.fields["saml"].choices = saml_choices
+            saml_div = Div(
+                HTML("""<p style='text-align:center;'>Or</p>"""),
+                HTML("""<h4>Choose a single sign-on option</h4>"""),
+                Field("saml", label="Select organization", css_class="select-style"),
+            )
 
         if len(layout_list) > 1:
             if saml_div:
-                layout_list.insert(len(layout_list)-1, saml_div)    
+                layout_list.insert(len(layout_list) - 1, saml_div)
         self.helper.layout = Layout(*layout_list)
 
-        self.helper.form_class = 'uk-form uk-form-stacked'
-        self.helper.field_class = 'uk-input-group uk-text-small'
-
+        self.helper.form_class = "uk-form uk-form-stacked"
+        self.helper.field_class = "uk-input-group uk-text-small"
 
 
 class UserRoleSelectionForm(forms.Form):
@@ -183,6 +183,7 @@ class ChangePasswordForm(forms.Form, PasswordValidationMixin):
     password1 = forms.CharField(widget=forms.PasswordInput)
     password2 = forms.CharField(widget=forms.PasswordInput)
     oldpassword_model = OldPasswords
+
     def __init__(self, *args, **kwargs):
         if kwargs.get("user"):
             self.user = kwargs["user"]

@@ -5,7 +5,7 @@ from django.views.generic import TemplateView, FormView
 from .forms import EnquiryForm
 from ..academy.models import Event, Stat
 from django.utils.timezone import now
-from zelthy.apps.shared.tenancy.templatetags.zstatic import zstatic
+from zango.apps.shared.tenancy.templatetags.zstatic import zstatic
 
 class LandingView(TemplateView):
     template_name = 'landing/home.html'

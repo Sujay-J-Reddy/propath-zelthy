@@ -3,7 +3,7 @@ from ..packages.crud.table.base import ModelTable
 from ..packages.crud.table.column import ModelCol, StringCol
 from .forms import NotificationForm
 from .models import Notification
-from zelthy.core.utils import get_current_role
+from zango.core.utils import get_current_role
 from ..franchise.utils import get_current_franchise
 
 class NotificationTable(ModelTable):
