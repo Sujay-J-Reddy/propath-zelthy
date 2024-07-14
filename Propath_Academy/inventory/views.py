@@ -16,6 +16,9 @@ class SchoolOrderCrudView(BaseCrudView):
 
     def display_add_button_check(self, request):
         return get_current_role().name in ['Admin', 'AnonymousUsers']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
 
 class KitCrudView(BaseCrudView):
     page_title = "Kits"
@@ -29,6 +32,9 @@ class KitCrudView(BaseCrudView):
     def display_add_button_check(self, request):
         return get_current_role().name in ['Admin', 'AnonymousUsers']
     
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
+    
 class VendorCrudView(BaseCrudView):
     page_title = "Vendors"
     add_btn_title = "Add New Vendor"
@@ -40,6 +46,9 @@ class VendorCrudView(BaseCrudView):
 
     def display_add_button_check(self, request):
         return get_current_role().name in ['Admin', 'AnonymousUsers']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
     
 class ItemCrudView(BaseCrudView):
     page_title = "Items"
@@ -53,6 +62,9 @@ class ItemCrudView(BaseCrudView):
     def display_add_button_check(self, request):
         return get_current_role().name in ['Admin', 'AnonymousUsers']
     
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
+    
 class LogCrudView(BaseCrudView):
     page_title = "Logs"
     add_btn_title = "Add New Log"
@@ -64,6 +76,9 @@ class LogCrudView(BaseCrudView):
 
     def display_add_button_check(self, request):
         return get_current_role().name in ['Admin', 'AnonymousUsers']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
     
 class OrderCrudView(BaseCrudView):
     page_title = "Orders"
@@ -77,5 +92,8 @@ class OrderCrudView(BaseCrudView):
 
     def display_add_button_check(self, request):
         return get_current_role().name in ['Franchisee']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
     
 

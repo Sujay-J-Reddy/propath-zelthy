@@ -15,6 +15,9 @@ class TeacherCrudView(BaseCrudView):
     def display_add_button_check(self, request):
         return get_current_role().name in ['Admin']
     
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
+    
 class InstructorFeedbackCrudView(BaseCrudView):
     page_title = "Instructor Feedbacks"
     add_btn_title = "Add Feedback"
@@ -26,3 +29,6 @@ class InstructorFeedbackCrudView(BaseCrudView):
 
     def display_add_button_check(self, request):
         return get_current_role().name in ['Teacher']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']

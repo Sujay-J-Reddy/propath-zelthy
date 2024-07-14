@@ -26,6 +26,9 @@ class EnquiryDataView(BaseCrudView):
     def display_add_button_check(self, request):
         return False
     
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
+    
 class EventCrudView(BaseCrudView):
     page_title = "Events"
     add_btn_title = "Add Event"
@@ -37,6 +40,9 @@ class EventCrudView(BaseCrudView):
 
     def display_add_button_check(self, request):
         return get_current_role().name in ['Admin']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
 
 class CompetitionCrudView(BaseCrudView):
     page_title = "Competition"
@@ -49,6 +55,9 @@ class CompetitionCrudView(BaseCrudView):
 
     def display_add_button_check(self, request):
         return get_current_role().name in ['Admin']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
 
 class CompetitionResultCrudView(BaseCrudView):
     page_title = "Competition Results"
@@ -62,6 +71,9 @@ class CompetitionResultCrudView(BaseCrudView):
     def display_add_button_check(self, request):
         return get_current_role().name in [ 'Admin']
     
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin', 'Franchisee']
+    
 class CompetitionStudentCrudView(BaseCrudView):
     page_title = "Competition Registrations"
     add_btn_title = "Add"
@@ -70,6 +82,9 @@ class CompetitionStudentCrudView(BaseCrudView):
 
     def display_add_button_check(self, request):
         return get_current_role().name in [ 'Franchisee']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin', 'Franchisee']
     
 class SchoolCrudView(BaseCrudView):
     page_title = "Schools"
@@ -98,6 +113,9 @@ class SchoolStudentCrudView(BaseCrudView):
     def display_add_button_check(self, request):
         return get_current_role().name in [ 'Admin']
     
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
+    
 class StatCrudView(BaseCrudView):
     page_title = "Stats Page"
     add_btn_title = "Add Stat"
@@ -110,8 +128,9 @@ class StatCrudView(BaseCrudView):
     def display_add_button_check(self, request):
         return get_current_role().name in [ 'Admin']
     
-
-
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
+    
 def check_birthdays(request, *args, **kwargs):
     today = datetime.now().date()
 
