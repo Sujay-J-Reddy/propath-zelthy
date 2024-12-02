@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 from ..packages.frame.decorator import add_frame_context
 from ..packages.crud.base import BaseCrudView
-from .tables import CompetitionTable, CompetitionResultTable, CompetitionStudentTable, SchoolTable, SchoolStudentTable, EnquiryTable, EventTable, StatTable
-from .forms import CompetitionForm, CompetitionResultForm, SchoolForm, SchoolStudentForm, EventForm, StatForm
+from .tables import CompetitionTable, CompetitionResultTable, CompetitionStudentTable, SchoolTable, SchoolStudentTable, EnquiryTable, EventTable, StatTable, TestimonialTable
+from .forms import CompetitionForm, CompetitionResultForm, SchoolForm, SchoolStudentForm, EventForm, StatForm, TestimonialForm
 from ..franchise.forms import CompetitionStudentForm
 from zango.core.utils import get_current_role
 from django.shortcuts import render
@@ -125,6 +125,21 @@ class StatCrudView(BaseCrudView):
     def has_add_perm(self, request):
         return False
     
+    def display_add_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
+    
+class TestimonialCrudView(BaseCrudView):
+    page_title = "Testimonials"
+    add_btn_title = "Add Testimonial"
+    table = TestimonialTable
+    form = TestimonialForm
+
+    def has_add_perm(self, request):
+        return True
+
     def display_add_button_check(self, request):
         return get_current_role().name in [ 'Admin']
     

@@ -52,12 +52,14 @@ class LoginForm(ZelthyAuthenticationForm):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_show_labels = False
+        submit_button = Submit("submit", "Login")
+        submit_button.field_classes = "btn"
         layout_list = [
             Div(
                 Field("username", placeholder="Email ID/ Mobile Number"),
                 Field("password", placeholder="Password"),
             ),
-            ButtonHolder(Submit("submit", "Login")),
+            ButtonHolder(submit_button),
         ]
 
         self.helper.layout = Layout(*layout_list)
@@ -75,12 +77,14 @@ class AppLoginForm(LoginForm):
         sso_pkg_config = package_installed("sso", self.request.tenant)
         self.helper = FormHelper()
         self.helper.form_show_labels = False
+        submit_button = Submit("submit", "Login")
+        submit_button.field_classes = "btn"
         layout_list = [
             Div(
                 Field("username", placeholder="Email ID/ Mobile Number"),
                 Field("password", placeholder="Password"),
             ),
-            ButtonHolder(Submit("submit", "Login")),
+            ButtonHolder(submit_button),
         ]
 
         saml_div = None
@@ -139,6 +143,8 @@ class UserRoleSelectionForm(forms.Form):
         choices = tuple(choices)
         self.fields["user_role"].choices = choices
         _text = "Select User Role"
+        submit_button = Submit("submit", "Proceed")
+        submit_button.field_classes = "btn"
         if len(choices) > 0:
             if len(choices) > 1:
                 self.helper.layout = Layout(
@@ -150,7 +156,7 @@ class UserRoleSelectionForm(forms.Form):
                             css_class="select-style",
                         ),
                     ),
-                    ButtonHolder(Submit("submit", "Proceed")),
+                    ButtonHolder(submit_button),
                 )
             else:
                 ## If only 1 role is available and the form is shown (required in openid login), then autosubmit
@@ -165,7 +171,7 @@ class UserRoleSelectionForm(forms.Form):
                             css_class="select-style",
                         ),
                     ),
-                    ButtonHolder(Submit("submit", "Proceed")),
+                    ButtonHolder(submit_button),
                 )
 
         else:
@@ -195,6 +201,9 @@ class ChangePasswordForm(forms.Form, PasswordValidationMixin):
         else:
             self.token = None
         super(ChangePasswordForm, self).__init__(*args, **kwargs)
+        submit_button = Submit("submit", "Submit")
+        submit_button.field_classes = "btn"
+
         self.helper = FormHelper()
         self.helper.form_show_labels = False
         self.helper.layout = Layout(
@@ -204,7 +213,7 @@ class ChangePasswordForm(forms.Form, PasswordValidationMixin):
                 Field("password1", placeholder="New password"),
                 Field("password2", placeholder="Confirm password"),
             ),
-            ButtonHolder(Submit("submit", "Submit")),
+            ButtonHolder(submit_button),
         )
         self.helper.form_class = "form"
 
@@ -249,13 +258,15 @@ class ResetPasswordForm(ChangePasswordForm):
 
     def __init__(self, *args, **kwargs):
         super(ResetPasswordForm, self).__init__(*args, **kwargs)
+        submit_buttton = Submit("submit", "Submit")
+        submit_buttton.field_classes = "btn"
         self.helper.layout = Layout(
             Div(
                 HTML("""<h2>Set a new password</h2>"""),
                 Field("password1", placeholder="New password"),
                 Field("password2", placeholder="Confirm password"),
             ),
-            ButtonHolder(Submit("submit", "Submit")),
+            ButtonHolder(submit_buttton),
         )
 
     def clean_password(self):

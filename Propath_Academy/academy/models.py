@@ -101,3 +101,9 @@ class Stat(DynamicModelBase):
     teachers = models.PositiveIntegerField()
     franchises = models.PositiveIntegerField()
 
+class Testimonial(DynamicModelBase):
+    name = models.CharField(max_length=100)
+    designation = models.CharField(max_length=100)
+    quote = models.TextField()
+    date = models.DateField()
+

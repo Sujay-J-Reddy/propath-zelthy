@@ -14,12 +14,19 @@
 
 /* Navigation Bar Styles */
 #top-nav {
-  background-color: rgb(225, 214, 174);
-  height: 50px;
+  background-color: rgb(241, 227, 156);
+  height: 66px;
   font-size: 25px;
   position: sticky;
   top: 0;
   z-index: 2;
+}
+
+.tagline {
+  font-size: 1.25rem; /* Adjust size as needed */
+  font-weight: 300;   /* Lighter weight for tagline effect */
+  font-style: italic; /* Optional: adds emphasis */
+  color: #6c757d;     /* Optional: gives a muted color look */
 }
 
 @media (max-width: 767px) {
@@ -34,14 +41,29 @@
   text-decoration: none;
   color: black;
   border-radius: 25px;
-  padding: 5px 15px;
+  padding: 8px 16px; /* Adjusted for better clickability */
   background-color: rgb(235, 235, 208);
   position: relative;
   top: 15%;
+  
+  /* Add subtle box shadow for depth */
+
+  /* Smooth transition for hover effects */
+  transition: all 0.3s ease;
+
+  /* Slight hover effect */
+}
+.signin-btn:hover {
+  transform: translateY(-2px); /* Lift the button slightly */
 }
 
+.signin-btn:active {
+  transform: translateY(0); /* Neutralize hover on click */
+}
+
+
 .last-item {
-  margin-right: 750px;
+  margin-right: 1050px;
 }
 
 .signin-btn:hover {
@@ -53,7 +75,7 @@
 
 /* Footer Styles */
 footer {
-  background-color: rgb(225, 214, 174);
+  background-color:  rgb(241, 227, 156);
   color: black;
   padding: 20px;
   text-align: center;
@@ -88,7 +110,7 @@ footer {
 }
 
 .footer-img {
-  max-height: 120px;
+  max-height: 160px;
   margin-right: 150px;
 }
 
@@ -155,7 +177,8 @@ body {
 }
 
 .title-span {
-  color: rgb(181, 52, 52);
+  color: rgb(187, 17, 17);
+  font-size: 60px;
 }
 
 .welcome-container {
@@ -188,16 +211,14 @@ h2 {
 }
 
 .courses-frame {
-  background-color: white;
   padding: 0px;
-  margin-bottom: 30px;
 }
 
 .course-container {
   position: relative;
   left: 4%;
   max-width: 90%;
-  margin: 2% 0%;
+  top: 0%;
 }
 
 .lead {
@@ -209,6 +230,49 @@ h2 {
 .wide {
   max-width: 700px;
 }
+
+.btn-genius {
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 50px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 1px;
+}
+
+.btn-genius::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: all 0.6s ease;
+}
+
+.btn-genius:hover::before {
+  left: 100%;
+}
+
+.btn-genius:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+}
+
+.btn-genius .rocket-icon {
+  margin-left: 10px;
+  font-size: 1.5rem;
+  vertical-align: middle;
+}
+
 
 p {
   font-size: 1.2rem;
@@ -310,13 +374,27 @@ footer {
 
 .iframe-video {
   position: relative;
-  left: 15%;
+  left: 30%;
   max-width: 80%;
   max-height: 30%;
 }
 
 .nav-right {
   margin-left: 800%;
+}
+
+.bold {
+  font-weight: bold;
+  color: #A60149;
+
+}
+
+.large {
+  font-size: 24px;
+}
+
+.nav-link {
+font-weight: bold;
 }
 
 @media (max-width: 767px) {
@@ -345,3 +423,4 @@ footer {
   max-height: 600px;
   object-fit: cover;
 }
+

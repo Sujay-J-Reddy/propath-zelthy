@@ -1,6 +1,7 @@
 from django.db.models import Q
 from ..packages.crud.table.base import ModelTable
 from ..packages.crud.table.column import ModelCol, StringCol
+from ..packages.workflow.base.models import WorkflowTransaction
 from .forms import KitForm, VendorForm, ItemForm, LogForm, OrderForm, SchoolOrderForm
 from .models import Kit, Vendor, Item, Log, Order, SchoolOrder
 from .details import OrderDetail, SchoolOrderDetail, LogDetail, KitDetail, ItemDetail, OrderDetail
@@ -175,6 +176,7 @@ class OrderTable(ModelTable):
     kits = ModelCol(display_as="Kits", searchable=True, sortable=True)
     items = ModelCol(display_as="Items", searchable=True, sortable=True)
     order_date = ModelCol(display_as="Order Date", searchable=True, sortable=True)
+    status = StringCol(display_as="Status", searchable=False, sortable=False)
     table_actions = []
     row_actions = []
 
@@ -210,6 +212,13 @@ class OrderTable(ModelTable):
             return html
         return "None"
     
+    def status_getval(self, obj):
+        try:
+            queryset = WorkflowTransaction.objects.filter(obj_uuid=obj.object_uuid).order_by('-created_at').first()
+        except WorkflowTransaction.DoesNotExist:
+            return "Pending"
+        return queryset.to_state.title()
+    
     def get_table_data_queryset(self):
         queryset = super().get_table_data_queryset()
         role = get_current_role()
@@ -237,6 +246,9 @@ class OrderTable(ModelTable):
         if search_term is not None:
             return Q(order_date__contains=search_term)
         return Q()
+    
+        
+    
 
 class SchoolOrderTable(OrderTable):
     id = ModelCol(display_as="Order ID", searchable=True, sortable=True)

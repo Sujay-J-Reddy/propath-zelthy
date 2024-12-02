@@ -12,7 +12,7 @@ from .utils import get_current_franchise
 
 
 class StudentForm(BaseForm):
-    s_id = ModelField(placeholder="Student ID", required=True, required_msg="This field is required")
+    s_id = ModelField(placeholder="Student ID", required=True, required_msg="This field is required", label="Student ID")
     name = ModelField(placeholder="Name", required=True, required_msg="This field is required")
     photo = ModelField(placeholder="Upload Photo", required=True, required_msg="This field is required")
     course = ModelField(placeholder="Course", required=True, required_msg="This field is required")
@@ -69,6 +69,7 @@ class StudentForm(BaseForm):
         instance = super().save(commit=False)
         if commit:
             instance.franchise = get_current_franchise()
+            print(instance.franchise)
             instance.save()
         return instance
     

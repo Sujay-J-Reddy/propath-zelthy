@@ -107,6 +107,18 @@
           }
         ]
       }
+    },
+    {
+      "name": "TestimonialView",
+      "description": "Testimonials on website",
+      "statement": {
+        "permissions": [
+          {
+            "name": "academy.views.TestimonialCrudView",
+            "type": "view"
+          }
+        ]
+      }
     }
   ]
 }

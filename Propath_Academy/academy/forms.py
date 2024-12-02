@@ -1,6 +1,6 @@
 from ..packages.crud.forms import BaseForm
 from ..packages.crud.form_fields import ModelField, CustomSchemaField
-from .models import Competition, CompetitionResult, School, SchoolStudent, Event, Stat
+from .models import Competition, CompetitionResult, School, SchoolStudent, Event, Stat, Testimonial
 from ..notifications.models import Notification
 from django import forms
 
@@ -71,7 +71,7 @@ class CompetitionResultForm(BaseForm):
                 account_type = "franchise",
                 notification_type = "competition_announcement",
                 franchise_id = franchise.id,
-                details = f'Dear {franchise.name}, Results of competition ({instance.competition.circular_no}) has been announced, visit the Competition results in Competition Page for more information.'
+                details = f'Dear {franchise.name}, Results of competition (Circular No: {instance.competition.circular_no}) has been announced, visit the Competition results in Competition Page for more information.'
             )
             instance.save()
         return instance
@@ -125,4 +125,20 @@ class StatForm(BaseForm):
             "students",
             "teachers",
             "franchises"
+        ]
+
+class TestimonialForm(BaseForm):
+    name = ModelField(placeholder="Name", required=True, required_msg="This field is required")
+    designation = ModelField(placeholder="Designation", required=True, required_msg="This field is required")
+    quote = ModelField(placeholder="Quote", required=True, required_msg="This field is required")
+    date = ModelField(placeholder="Date", required=False)
+
+    class Meta:
+        model = Testimonial
+        title = "Testimonial Form"
+        order = [
+            "name",
+            "designation",
+            "quote",
+            "date",
         ]

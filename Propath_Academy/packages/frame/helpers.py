@@ -16,7 +16,7 @@ def get_user_profile(request, user_role):
     if user_role.name == "AnonymousUsers":
         profile = {
             "name": "AnonymousUsers",
-            "roles": [],
+            "other_roles": [],
             "current_role": "AnonymousUsers",
         }
         return profile

@@ -1,8 +1,8 @@
 from django.db.models import Q
 from ..packages.crud.table.base import ModelTable
 from ..packages.crud.table.column import ModelCol, StringCol
-from .models import Competition, CompetitionResult, CompetitionStudent, School, SchoolStudent, Enquiry, Event, Stat
-from .forms import CompetitionForm, CompetitionResultForm, SchoolForm, SchoolStudentForm, EventForm, StatForm
+from .models import Competition, CompetitionResult, CompetitionStudent, School, SchoolStudent, Enquiry, Event, Stat, Testimonial
+from .forms import CompetitionForm, CompetitionResultForm, SchoolForm, SchoolStudentForm, EventForm, StatForm, TestimonialForm
 from ..franchise.forms import CompetitionStudentForm
 from . details import EventDetail, EnquiryDetail, CompetitionDetail, CompetitionResultDetail, SchoolDetail, SchoolStudentDetail,CompetitionStudentDetail
 from django.db.models import F, Value, CharField
@@ -227,6 +227,7 @@ class CompetitionResultTable(ModelTable):
         if modified_id is not None:
             return Q(id=modified_id)
         return Q()    
+    
 class CompetitionStudentTable(ModelTable):
     circular_no = StringCol(display_as="Circular Number", sortable=False, searchable=True)
     franchise = StringCol(display_as="Franchise", sortable=True, searchable=True)
@@ -418,10 +419,10 @@ class StatTable(ModelTable):
             "key": "edit",
             "description": "Edit Stats",
             "type": "form",
-            "form": StatForm,  # Specify the form to use for editing
+            "form": StatForm, 
             "roles": [
                 "Admin"
-            ],  # Specify roles that can perform the action
+            ],  
         }
     ]
 
@@ -431,4 +432,31 @@ class StatTable(ModelTable):
             "students",
             "teachers",
             "franchises"
+        ]
+
+class TestimonialTable(ModelTable):
+    name = ModelCol(display_as="Name",searchable=True,sortable=True)
+    designation = ModelCol(display_as="Designation",searchable=True,sortable=True)
+    quote = ModelCol(display_as="Quote",searchable=True,sortable=True)
+    table_actions = []
+    row_actions = [
+        {
+            "name": "Edit",
+            "key": "edit",
+            "description": "Edit Testimonial",
+            "type": "form",
+            "form": TestimonialForm,  
+            "roles": [
+                "Admin"
+            ],  
+        }
+    ]
+
+    class Meta:
+        model = Testimonial
+        fields = [
+            "name",
+            "designation",
+            "quote",
+            "date"
         ]

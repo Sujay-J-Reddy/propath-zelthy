@@ -566,23 +566,27 @@ class WorkflowBase(WorkflowRequestMixin):
             tag_details.append(tag_dict)
         return tag_details
 
+    def get_transition_form_class(self, transition_type, transition_name):
+        form_class = None
+        if transition_type == "status":
+            transition_meta = self.get_status_transition_metadata(name=transition_name)
+            form_class = transition_meta.get("form")
+        elif transition_type == "tag":
+            transition_state = self.request.GET.get("transition_state")
+            tag_transition = self.get_tag_transition(transition_name)
+            form_class = tag_transition.get(transition_state, {}).get("form")
+
+        return form_class
+
     def get(self, request, *args, **kwargs):
         action = self.get_request_action(request)
 
         if action == "initialize_form":
             transition_name = request.GET.get("transition_name")
             transition_type = request.GET.get("transition_type")
-            print(transition_name, transition_type)
-            form_class = None
-            if transition_type == "status":
-                transition_meta = self.get_status_transition_metadata(
-                    name=transition_name
-                )
-                form_class = transition_meta.get("form")
-            elif transition_type == "tag":
-                transition_state = request.GET.get("transition_state")
-                tag_transition = self.get_tag_transition(transition_name)
-                form_class = tag_transition.get(transition_state, {}).get("form")
+            form_class = self.get_transition_form_class(
+                transition_type, transition_name
+            )
 
             if form_class:
                 form = form_class(
@@ -609,6 +613,43 @@ class WorkflowBase(WorkflowRequestMixin):
 
         if action == "process_transition":
             transition_name = request.GET.get("transition_name")
+            transition_type = request.GET.get("transition_type")
+            form_action = request.GET.get("form_action")
+
+            if form_action == "sync_form":
+                form_class = self.get_transition_form_class(
+                    transition_type, transition_name
+                )
+
+                if form_class:
+                    form = form_class(
+                        data=self.request.POST,
+                        files=self.request.FILES,
+                        initial={"object_instance": self.object_instance},
+                        crud_view_instance=self.crud_view_instance,
+                    )
+
+                    json_schema, ui_schema = form.convert_model_form_to_json_schema()
+
+                    return get_api_response(
+                        success=True,
+                        response_content={
+                            "is_multistep": False,
+                            "form": {
+                                "json_schema": json_schema,
+                                "ui_schema": ui_schema,
+                                "form_data": request.POST.dict(),
+                            },
+                        },
+                        status=200,
+                    )
+
+                return get_api_response(
+                    success=False,
+                    response_content={"message": "No form found"},
+                    status=400,
+                )
+
             try:
                 transition_type = request.GET.get("transition_type", "status")
                 if transition_type == "status":
@@ -622,7 +663,9 @@ class WorkflowBase(WorkflowRequestMixin):
                     response_content = {"message": response_content}
 
                 return get_api_response(
-                    success=success, response_content=response_content, status=200
+                    success=success,
+                    response_content=response_content,
+                    status=200 if success else 400,
                 )
             except:
                 return get_api_response(

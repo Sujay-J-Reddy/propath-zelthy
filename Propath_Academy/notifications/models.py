@@ -26,3 +26,6 @@ class Notification(DynamicModelBase):
     details = models.TextField(blank=True,default="Details Not Available")
     franchise = ZForeignKey(Franchisee, on_delete=models.DO_NOTHING, null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.notification_type.replace('_', ' ').title()} Notification"

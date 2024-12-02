@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import check_birthdays, EventCrudView, EnquiryDataView, CompetitionCrudView, CompetitionResultCrudView, CompetitionStudentCrudView, SchoolCrudView, SchoolStudentCrudView, StatCrudView
+from .views import check_birthdays, EventCrudView, EnquiryDataView, CompetitionCrudView, CompetitionResultCrudView, CompetitionStudentCrudView, SchoolCrudView, SchoolStudentCrudView, StatCrudView, TestimonialCrudView
 from ..franchise.views import LevelCertificateCrudView
 
 urlpatterns = [
@@ -12,5 +12,6 @@ urlpatterns = [
     path('enquiries/', EnquiryDataView.as_view(), name="enquiry_data"),
     path('stats/', StatCrudView.as_view(), name="stat_crud"),
     path('events/', EventCrudView.as_view(), name="event_crud"),
-    path('birthdays/',check_birthdays, name="birthdays")
+    path('birthdays/',check_birthdays, name="birthdays"),
+    path('testimonials/', TestimonialCrudView.as_view(), name="testimonial_crud")
 ]

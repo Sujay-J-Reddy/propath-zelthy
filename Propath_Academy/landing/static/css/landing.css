@@ -467,6 +467,14 @@ body {
   gap: 40px;
 }
 
+.tagline {
+  font-size: 1.25rem; /* Adjust size as needed */
+  font-weight: 300;   /* Lighter weight for tagline effect */
+  font-style: italic; /* Optional: adds emphasis */
+  color: #6c757d;     /* Optional: gives a muted color look */
+}
+
+
 .hero-text {
   color: var(--eerie-black-1);
   font-size: var(--fs-4);
@@ -1043,6 +1051,49 @@ body {
   opacity: 1;
   pointer-events: all;
 }
+
+.btn-genius {
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-radius: 50px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 1px;
+}
+
+.btn-genius::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: all 0.6s ease;
+}
+
+.btn-genius:hover::before {
+  left: 100%;
+}
+
+.btn-genius:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+}
+
+.btn-genius .rocket-icon {
+  margin-left: 10px;
+  font-size: 1.5rem;
+  vertical-align: middle;
+}
+
 
 /*-----------------------------------*\
     #MEDIA QUERIES

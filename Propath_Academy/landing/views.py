@@ -3,7 +3,7 @@ from django.shortcuts import render
 from ..packages.crud.base import BaseFormOnlyView
 from django.views.generic import TemplateView, FormView
 from .forms import EnquiryForm
-from ..academy.models import Event, Stat
+from ..academy.models import Event, Stat, Testimonial
 from django.utils.timezone import now
 from zango.apps.shared.tenancy.templatetags.zstatic import zstatic
 
@@ -20,6 +20,14 @@ class LandingView(TemplateView):
             Event(name="Sample Event 2", date=now().date() - timedelta(days=2), details="Details of Sample Event 2"),
             Event(name="Sample Event 3", date=now().date() - timedelta(days=3), details="Details of Sample Event 3"),
         ]
+        testimonials_queryset = Testimonial.objects.all().order_by('-date')[:2]
+        sample_testimonials = [
+            Testimonial(name="Sample Testimonial 1", date=now().date() - timedelta(days=1), designation="Sample Designation 1", quote="Sample Quote 1"),
+            Testimonial(name="Sample Testimonial 2", date=now().date() - timedelta(days=2), designation="Sample Designation 2", quote="Sample Quote 2"),
+        ]
+
+        actual_testimonials = list(testimonials_queryset)
+ 
 
         actual_events = list(events_queryset)
         for i in range(3):
@@ -34,6 +42,8 @@ class LandingView(TemplateView):
             numbers = Stat(students=0, teachers=0, franchises=0)  
 
         context['numbers'] = numbers
+        context['testimonial1'] = actual_testimonials[0] or sample_testimonials[0]
+        context['testimonial2'] = actual_testimonials[1] or sample_testimonials[1]
 
         return context
 
