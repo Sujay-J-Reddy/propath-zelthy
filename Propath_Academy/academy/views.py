@@ -1,10 +1,10 @@
 from django.http import HttpResponse
 from ..packages.frame.decorator import add_frame_context
 from ..packages.crud.base import BaseCrudView
-from .tables import CompetitionTable, CompetitionResultTable, CompetitionStudentTable, SchoolTable, SchoolStudentTable, EnquiryTable, EventTable
-from .forms import CompetitionForm, CompetitionResultForm, SchoolForm, SchoolStudentForm, EventForm
+from .tables import CompetitionTable, CompetitionResultTable, CompetitionStudentTable, SchoolTable, SchoolStudentTable, EnquiryTable, EventTable, StatTable, TestimonialTable
+from .forms import CompetitionForm, CompetitionResultForm, SchoolForm, SchoolStudentForm, EventForm, StatForm, TestimonialForm
 from ..franchise.forms import CompetitionStudentForm
-from zelthy.core.utils import get_current_role
+from zango.core.utils import get_current_role
 from django.shortcuts import render
 from django.views.generic import TemplateView, FormView
 from datetime import datetime
@@ -12,8 +12,7 @@ from ..franchise.models import Franchisee, Student
 from ..teacher.models import Teacher
 from ..notifications.models import Notification
 from ..landing.forms import EnquiryForm
-# class LandingView(TemplateView):
-#     template_name = 'academy/landing.html'
+
     
 class EnquiryDataView(BaseCrudView):
     page_title = "Enquiries"
@@ -26,6 +25,10 @@ class EnquiryDataView(BaseCrudView):
     
     def display_add_button_check(self, request):
         return False
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
+    
 class EventCrudView(BaseCrudView):
     page_title = "Events"
     add_btn_title = "Add Event"
@@ -37,6 +40,9 @@ class EventCrudView(BaseCrudView):
 
     def display_add_button_check(self, request):
         return get_current_role().name in ['Admin']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
 
 class CompetitionCrudView(BaseCrudView):
     page_title = "Competition"
@@ -49,6 +55,9 @@ class CompetitionCrudView(BaseCrudView):
 
     def display_add_button_check(self, request):
         return get_current_role().name in ['Admin']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
 
 class CompetitionResultCrudView(BaseCrudView):
     page_title = "Competition Results"
@@ -62,6 +71,9 @@ class CompetitionResultCrudView(BaseCrudView):
     def display_add_button_check(self, request):
         return get_current_role().name in [ 'Admin']
     
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin', 'Franchisee']
+    
 class CompetitionStudentCrudView(BaseCrudView):
     page_title = "Competition Registrations"
     add_btn_title = "Add"
@@ -70,6 +82,9 @@ class CompetitionStudentCrudView(BaseCrudView):
 
     def display_add_button_check(self, request):
         return get_current_role().name in [ 'Franchisee']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin', 'Franchisee']
     
 class SchoolCrudView(BaseCrudView):
     page_title = "Schools"
@@ -83,6 +98,9 @@ class SchoolCrudView(BaseCrudView):
     def display_add_button_check(self, request):
         return get_current_role().name in [ 'Admin']
     
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
+    
 class SchoolStudentCrudView(BaseCrudView):
     page_title = "School Students"
     add_btn_title = "Add School Students"
@@ -94,8 +112,40 @@ class SchoolStudentCrudView(BaseCrudView):
 
     def display_add_button_check(self, request):
         return get_current_role().name in [ 'Admin']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
+    
+class StatCrudView(BaseCrudView):
+    page_title = "Stats Page"
+    add_btn_title = "Add Stat"
+    table = StatTable
+    form = StatForm
 
+    def has_add_perm(self, request):
+        return False
+    
+    def display_add_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
+    
+class TestimonialCrudView(BaseCrudView):
+    page_title = "Testimonials"
+    add_btn_title = "Add Testimonial"
+    table = TestimonialTable
+    form = TestimonialForm
 
+    def has_add_perm(self, request):
+        return True
+
+    def display_add_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
+    
 def check_birthdays(request, *args, **kwargs):
     today = datetime.now().date()
 

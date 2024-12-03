@@ -4,11 +4,13 @@ from django.db.models import Q
 from .models import Teacher, InstructorFeedback
 from .forms import TeacherForm, TeacherLevelForm
 from .utils import get_current_teacher
-from zelthy.core.utils import get_current_role
+from zango.core.utils import get_current_role
+from ..franchise.utils import get_current_franchise
+from .details import TeacherDetail, InstructorFeedbackDetail
 
 class TeacherTable(ModelTable):
     name = ModelCol(display_as="Name", sortable=True, searchable=True)
-    photo = ModelCol(display_as="Photo", sortable=True, searchable=True)
+    photo = ModelCol(display_as="Photo", sortable=False, searchable=False)
     centre_name = ModelCol(display_as="Centre Name", sortable=True, searchable=True)
     franchise = ModelCol(display_as="Franchise", sortable=True, searchable=True)
     program_name = ModelCol(display_as="Program Name", sortable=True, searchable=True)
@@ -46,6 +48,7 @@ class TeacherTable(ModelTable):
 
     class Meta:
         model = Teacher
+        detail_class = TeacherDetail
         fields = [
             "name",
             "photo",
@@ -78,22 +81,71 @@ class TeacherTable(ModelTable):
     def perform_row_action_update_teacher_level(self, request, obj):
         pass
     
-    def id_Q_obj(self, search_term):
-        try:
-            modified_id = int(search_term) 
-        except ValueError:
-            modified_id = None  # Not an integer, ignore
-        if modified_id is not None:
-            return Q(id=modified_id)
-        return Q()
-    
     def get_table_data_queryset(self):
         queryset = super().get_table_data_queryset()
         role = get_current_role()
-        if role.name == 'teacher':
-            return queryset.filter(name=get_current_teacher().name)
+        if role.name == 'Teacher':
+            return queryset.filter(id=get_current_teacher().id)   
+        elif role.name == 'Franchisee':
+            return queryset.filter(franchise__id=get_current_franchise().id)
         else:
             return queryset
+        
+    def name_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(name__contains=search_term)
+        return Q()
+
+    def centre_name_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(centre_name__contains=search_term)
+        return Q()
+
+    def franchise_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(franchise__name__contains=search_term)
+        return Q()
+
+    def program_name_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(program_name__contains=search_term)
+        return Q()
+
+
+    def training_level_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(training_level__contains=search_term)
+        return Q()
+
+    def due_date_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(due_date__contains=search_term)
+        return Q()
+
+    def address_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(address__contains=search_term)
+        return Q()
+
+    def city_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(city__contains=search_term)
+        return Q()
+
+    def state_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(state__contains=search_term)
+        return Q()
+
+    def contact_no_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(contact_no__contains=search_term)
+        return Q()
+
+    def email_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(email__contains=search_term)
+        return Q()
 
 class InstructorFeedbackTable(ModelTable):
     teacher = ModelCol(display_as = "Name", searchable = True, sortable = True)
@@ -114,6 +166,7 @@ class InstructorFeedbackTable(ModelTable):
 
     class Meta:
         model = InstructorFeedback
+        detail_class = InstructorFeedbackDetail
         fields = [
             "teacher",
             "completed_level",
@@ -130,10 +183,81 @@ class InstructorFeedbackTable(ModelTable):
             "date",
         ]
 
+
+    def teacher_getval(self, obj):
+        return obj.teacher.name
+
     def get_table_data_queryset(self):
         queryset = super().get_table_data_queryset()
         role = get_current_role()
-        if role.name == 'teacher':
-            return queryset.filter(name=get_current_teacher().name)
-        else:
-            return queryset    
+        if role.name == 'Teacher':
+            return queryset.filter(teacher__id=get_current_teacher().id)
+        elif role.name == 'Franchisee':
+            return queryset.filter(teacher__franchise__id=get_current_franchise().id)
+        return queryset
+
+    def teacher_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(teacher__name__contains=search_term)
+        return Q()
+
+    def completed_level_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(completed_level__contains=search_term)
+        return Q()
+
+    def current_level_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(current_level__contains=search_term)
+        return Q()
+
+    def center_name_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(center_name__contains=search_term)
+        return Q()
+
+    def center_address_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(center_address__contains=search_term)
+        return Q()
+
+    def punctuality_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(punctuality__contains=search_term)
+        return Q()
+
+    def attention_to_instructor_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(attention_to_instructor__contains=search_term)
+        return Q()
+
+    def problem_solving_skills_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(problem_solving_skills__contains=search_term)
+        return Q()
+
+    def innovative_method_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(innovative_method__contains=search_term)
+        return Q()
+
+    def teaching_method_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(teaching_method__contains=search_term)
+        return Q()
+
+    def sharing_experiences_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(sharing_experiences__contains=search_term)
+        return Q()
+
+    def comments_suggestions_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(comments_suggestions__contains=search_term)
+        return Q()
+
+    def date_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(date__contains=search_term)
+        return Q()
+ 

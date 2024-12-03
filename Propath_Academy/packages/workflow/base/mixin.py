@@ -19,7 +19,7 @@ class WorkflowRequestMixin(object):
         :return: The user associated with the request or None if the user is anonymous.
         """
 
-        from zelthy.core.utils import get_current_role
+        from zango.core.utils import get_current_role
 
         user_role = get_current_role()
 

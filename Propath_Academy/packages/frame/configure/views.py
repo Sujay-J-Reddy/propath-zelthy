@@ -9,8 +9,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
 from rest_framework.views import APIView
 
-from zelthy.apps.appauth.models import UserRoleModel
-from zelthy.core.api import get_api_response
+from zango.apps.appauth.models import UserRoleModel
+from zango.core.api import get_api_response
 
 from .models import FramesModel
 from .serializers import FramesModelSerializer

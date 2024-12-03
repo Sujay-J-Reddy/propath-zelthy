@@ -10,10 +10,10 @@ from django.db import models
 from django.http import JsonResponse
 from rest_framework import serializers
 
-from zelthy.core.utils import get_current_role
-from zelthy.apps.dynamic_models.fields import ZForeignKey, ZOneToOneField
-from zelthy.core.tasks import zelthy_task_executor
-from zelthy.core.api import get_api_response
+from zango.core.utils import get_current_role
+from zango.apps.dynamic_models.fields import ZForeignKey, ZOneToOneField
+from zango.core.tasks import zango_task_executor
+from zango.core.api import get_api_response
 
 from .serializers import StringRelatedMeta
 from .column import ModelCol, StringCol, NumericCol, SelectCol, field_map
@@ -504,7 +504,7 @@ class ModelTable(CrudRequestMixin):
                 export_type="xlsx",
                 export_metadata=export_metadata,
             )
-            task_res = zelthy_task_executor.delay(
+            task_res = zango_task_executor.delay(
                 request.tenant.name,
                 "packages.crud.downloads.tasks.export_table",
                 request_data,

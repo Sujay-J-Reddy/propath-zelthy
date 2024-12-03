@@ -1,4 +1,4 @@
-from zelthy.core.utils import get_current_request
+from zango.core.utils import get_current_request
 from .models import Teacher
 def get_current_teacher():
 

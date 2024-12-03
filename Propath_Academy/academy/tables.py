@@ -1,18 +1,19 @@
 from django.db.models import Q
 from ..packages.crud.table.base import ModelTable
 from ..packages.crud.table.column import ModelCol, StringCol
-from .models import Competition, CompetitionResult, CompetitionStudent, School, SchoolStudent, Enquiry, Event
-from .forms import CompetitionForm, CompetitionResultForm, SchoolForm, SchoolStudentForm, EventForm
+from .models import Competition, CompetitionResult, CompetitionStudent, School, SchoolStudent, Enquiry, Event, Stat, Testimonial
+from .forms import CompetitionForm, CompetitionResultForm, SchoolForm, SchoolStudentForm, EventForm, StatForm, TestimonialForm
 from ..franchise.forms import CompetitionStudentForm
-from . details import EventDetail, EnquiryDetail, CompetitionDetail, CompetitionResultDetail, SchoolDetail, SchoolStudentDetail
+from . details import EventDetail, EnquiryDetail, CompetitionDetail, CompetitionResultDetail, SchoolDetail, SchoolStudentDetail,CompetitionStudentDetail
 from django.db.models import F, Value, CharField
 from django.db.models.functions import Concat
-from zelthy.core.utils import get_current_role
+from zango.core.utils import get_current_role
 from ..franchise.utils import get_current_franchise
+
 class EventTable(ModelTable):
     name = ModelCol(display_as="Name", sortable=True, searchable=True)
     date = ModelCol(display_as="Date", sortable=True, searchable=True)
-    photo = ModelCol(display_as="Photo", sortable=True, searchable=True)
+    photo = ModelCol(display_as="Photo", sortable=False, searchable=False)
     details = ModelCol(display_as="Details", sortable=True, searchable=True)
     table_actions = []
     row_actions = [
@@ -47,6 +48,8 @@ class EventTable(ModelTable):
         if search_term is not None:
             return Q(details__contains = search_term)
         return Q()
+    
+    
 
 class EnquiryTable(ModelTable):
     name = ModelCol(display_as="Name", sortable=True, searchable=True)
@@ -117,7 +120,7 @@ class CompetitionTable(ModelTable):
     circular_no = ModelCol(display_as="Circular Number", sortable=True, searchable=True)
     name = ModelCol(display_as="Name", sortable=True, searchable=True)
     level_cutoff_date = ModelCol(display_as="Level Cut off Date", sortable=True, searchable=True)
-    pdf_file = ModelCol(display_as="PDF File", sortable=True, searchable=True)
+    pdf_file = ModelCol(display_as="PDF File", sortable=False, searchable=False)
     table_actions = []
     row_actions = [
         {
@@ -158,14 +161,14 @@ class CompetitionTable(ModelTable):
         # Example: Check if the user has the necessary permissions to edit records
         return True
     
+    def circular_no_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(circular_no__contains=search_term)
+        return Q()
 
-    def id_Q_obj(self, search_term):
-        try:
-            modified_id = int(search_term) 
-        except ValueError:
-            modified_id = None  # Not an integer, ignore
-        if modified_id is not None:
-            return Q(id=modified_id)
+    def name_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(name__contains=search_term)
         return Q()
 
 class CompetitionResultTable(ModelTable):
@@ -215,7 +218,7 @@ class CompetitionResultTable(ModelTable):
         if role.name == 'Admin':
             return queryset
         else:
-            return queryset.filter(franchise=get_current_franchise())
+            return queryset.filter(student__franchise_id=get_current_franchise())
     def id_Q_obj(self, search_term):
         try:
             modified_id = int(search_term) 
@@ -224,19 +227,21 @@ class CompetitionResultTable(ModelTable):
         if modified_id is not None:
             return Q(id=modified_id)
         return Q()    
+    
 class CompetitionStudentTable(ModelTable):
     circular_no = StringCol(display_as="Circular Number", sortable=False, searchable=True)
     franchise = StringCol(display_as="Franchise", sortable=True, searchable=True)
-    student = StringCol(display_as="Students", sortable=True, searchable=True)
+    # student = StringCol(display_as="Students", sortable=True, searchable=True)
     date = ModelCol(display_as="Date", sortable=True, searchable=True)
     table_actions = []
     row_actions = []    
     class Meta:
         model = CompetitionStudent
+        detail_class = CompetitionStudentDetail
         fields = [
             "franchise",
-            "student",
-            "date",
+            "date"
+
         ]
         # row_selector = {"enabled": True, "multi": False}
 
@@ -249,22 +254,24 @@ class CompetitionStudentTable(ModelTable):
     def student_getval(self, obj):
         return f'{obj.student.s_id} - {obj.student.name}'
     
-    # def get_table_data_queryset(self):
-    #     query = CompetitionStudent.objects.values('competition', 'franchise', 'date', 'modified_at', 'created_at').distinct()
-    #     print(query, flush=True)
-    #     return query
+
     def get_table_data_queryset(self):
-        annotated_queryset = CompetitionStudent.objects.annotate(composite_key=Concat(F('competition'), Value('-'), F('franchise')))
-        distinct_entries = annotated_queryset.filter(composite_key__in=annotated_queryset.values('composite_key').distinct())
-        return distinct_entries    
-    def id_Q_obj(self, search_term):
-        try:
-            modified_id = int(search_term) 
-        except ValueError:
-            modified_id = None  # Not an integer, ignore
-        if modified_id is not None:
-            return Q(id=modified_id)
+        queryset= super().get_table_data_queryset()
+        distinct_combinations =  queryset.order_by('franchise', 'competition').distinct('franchise','competition')
+        return distinct_combinations
+           
+
+    def competition_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(competition__name__contains=search_term)
         return Q()
+
+
+    def circular_no_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(circular_no__name__contains=search_term)
+        return Q()
+
 
 class SchoolTable(ModelTable):
     name = ModelCol(display_as="Name", searchable=True, sortable=True)
@@ -295,14 +302,27 @@ class SchoolTable(ModelTable):
             "location"
         ]
 
-    def id_Q_obj(self, search_term):
-        try:
-            modified_id = int(search_term) 
-        except ValueError:
-            modified_id = None  # Not an integer, ignore
-        if modified_id is not None:
-            return Q(id=modified_id)
+    def name_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(name__contains=search_term)
         return Q()
+
+    def contact_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(contact__contains=search_term)
+        return Q()
+
+    def mail_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(mail__contains=search_term)
+        return Q()
+
+    def location_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(location__contains=search_term)
+        return Q()
+
+    
     
     def can_perform_row_action_edit(self, request, obj):
         # Implement logic to check if the user can perform the Edit action
@@ -344,14 +364,6 @@ class SchoolStudentTable(ModelTable):
             "contact",
         ]
 
-    def id_Q_obj(self, search_term):
-        try:
-            modified_id = int(search_term) 
-        except ValueError:
-            modified_id = None  # Not an integer, ignore
-        if modified_id is not None:
-            return Q(id=modified_id)
-        return Q()
     
     def can_perform_row_action_edit(self, request, obj):
         # Implement logic to check if the user can perform the Edit action
@@ -361,4 +373,90 @@ class SchoolStudentTable(ModelTable):
     def school_getval(self, obj):
         return f"{obj.school.name}"
     
- 
+    def name_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(name__contains=search_term)
+        return Q()
+
+    def school_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(school__name__contains=search_term)
+        return Q()
+
+    def course_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(course__contains=search_term)
+        return Q()
+
+    def programme_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(programme__contains=search_term)
+        return Q()
+
+    def level_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(level__contains=search_term)
+        return Q()
+
+    def dob_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(dob__contains=search_term)
+        return Q()
+
+    def contact_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(contact__contains=search_term)
+        return Q()
+
+class StatTable(ModelTable):
+    students = ModelCol(display_as="Students",searchable=False,sortable=False)
+    teachers = ModelCol(display_as="Teachers",searchable=False,sortable=False)
+    franchises = ModelCol(display_as="Franchises",searchable=False,sortable=False)
+    table_actions = []
+    row_actions = [
+        {
+            "name": "Edit",
+            "key": "edit",
+            "description": "Edit Stats",
+            "type": "form",
+            "form": StatForm, 
+            "roles": [
+                "Admin"
+            ],  
+        }
+    ]
+
+    class Meta:
+        model = Stat
+        fields = [
+            "students",
+            "teachers",
+            "franchises"
+        ]
+
+class TestimonialTable(ModelTable):
+    name = ModelCol(display_as="Name",searchable=True,sortable=True)
+    designation = ModelCol(display_as="Designation",searchable=True,sortable=True)
+    quote = ModelCol(display_as="Quote",searchable=True,sortable=True)
+    table_actions = []
+    row_actions = [
+        {
+            "name": "Edit",
+            "key": "edit",
+            "description": "Edit Testimonial",
+            "type": "form",
+            "form": TestimonialForm,  
+            "roles": [
+                "Admin"
+            ],  
+        }
+    ]
+
+    class Meta:
+        model = Testimonial
+        fields = [
+            "name",
+            "designation",
+            "quote",
+            "date"
+        ]

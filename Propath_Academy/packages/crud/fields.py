@@ -246,7 +246,7 @@ class DateJSONSchemaField(BaseJSONSchemaField):
         return self.field_schema
 
     def to_ui_schema(self):
-        from zelthy.core.utils import get_current_request
+        from zango.core.utils import get_current_request
 
         request = get_current_request()
 
@@ -279,7 +279,7 @@ class DateTimeJSONSchemaField(BaseJSONSchemaField):
         return self.field_schema
 
     def to_ui_schema(self):
-        from zelthy.core.utils import get_current_request
+        from zango.core.utils import get_current_request
 
         request = get_current_request()
         self.ui_schema = super(DateTimeJSONSchemaField, self).to_ui_schema()
@@ -304,7 +304,7 @@ class FileJSONSchemaField(BaseJSONSchemaField):
         self.field_schema = super().to_json_schema(initial)
         self.field_schema["type"] = "string"
         if self.field_schema.get("default"):
-            from zelthy.core.utils import get_current_request
+            from zango.core.utils import get_current_request
 
             request = get_current_request()
             url = request.build_absolute_uri(self.field_schema["default"].url)

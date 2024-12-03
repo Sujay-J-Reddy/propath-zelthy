@@ -6,7 +6,7 @@ from .models import Franchisee, Student, LevelCertificate
 from .forms import FranchiseeForm, StudentForm, StudentLevelForm
 from .details import FranchiseDetail, LevelCertificateDetail, StudentDetail
 from ..franchise.utils import get_current_franchise
-from zelthy.core.utils import get_current_role
+from zango.core.utils import get_current_role
 
 class FranchiseeTable(ModelTable):
     id = ModelCol(display_as="ID", sortable=True, searchable=True)
@@ -45,18 +45,35 @@ class FranchiseeTable(ModelTable):
         ]
         
 
+
     def can_perform_row_action_edit(self, request, obj):
         # Implement logic to check if the user can perform the Edit action
         # Example: Check if the user has the necessary permissions to edit records
         return True
 
     def id_Q_obj(self, search_term):
-        try:
-            modified_id = int(search_term) 
-        except ValueError:
-            modified_id = None  # Not an integer, ignore
-        if modified_id is not None:
-            return Q(id=modified_id)
+        if search_term is not None:
+            return Q(id__contains=search_term)
+        return Q()
+
+    def name_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(name__contains=search_term)
+        return Q()
+
+    def contact_number_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(contact_number__contains=search_term)
+        return Q()
+
+    def center_address_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(center_address__contains=search_term)
+        return Q()
+
+    def email_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(email__contains=search_term)
         return Q()
     
     
@@ -68,6 +85,7 @@ class StudentTable(ModelTable):
     programme = ModelCol(display_as="Programme", sortable=True, searchable=True)
     level = ModelCol(display_as="Level", sortable=True, searchable=True)
     franchise = ModelCol(display_as="Franchise", sortable=True, searchable=True, user_roles=["Admin"])
+    course_start_date = ModelCol(display_as="Course Start Date", sortable=True, searchable=True)
     contact_number = ModelCol(
         display_as="Contact Number", sortable=True, searchable=True
     )
@@ -109,6 +127,7 @@ class StudentTable(ModelTable):
             "course",
             "programme",
             "level",
+            "course_start_date",
             "contact_number",
             "residential_address",
             "email",
@@ -196,5 +215,61 @@ class LevelCertificateTable(ModelTable):
     
     def franchise_getval(self, obj):
         return obj.student.franchise.name
+    
+    def s_id_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(s_id__contains=search_term)
+        return Q()
+
+    def franchise_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(franchise__name__contains=search_term)
+        return Q()
+
+    def name_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(name__contains=search_term)
+        return Q()
+
+    def course_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(course__contains=search_term)
+        return Q()
+
+    def programme_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(programme__contains=search_term)
+        return Q()
+
+    def level_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(level__contains=search_term)
+        return Q()
+
+    def contact_number_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(contact_number__contains=search_term)
+        return Q()
+
+    def residential_address_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(residential_address__contains=search_term)
+        return Q()
+
+    def email_Q_obj(self, search_term):
+        if search_term is not None:
+            return Q(email__contains=search_term)
+        return Q()
+    
+    def get_table_data_queryset(self):
+        queryset = super().get_table_data_queryset()
+        role = get_current_role()
+        if role.name == 'franchise':
+            return queryset.filter(franchise=get_current_franchise())
+        return queryset
+
+
+
+
     
     

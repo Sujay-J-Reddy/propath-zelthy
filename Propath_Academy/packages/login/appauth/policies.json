@@ -11,6 +11,18 @@
                     }
                 ]
             }
+        },
+        {
+            "name": "AppOpenIDLogin",
+            "description": "Policy for accessing the Login View",
+            "statement": {
+                "permissions": [
+                    {
+                        "name": "packages.login.appauth.views.AppOpenIDLogin",
+                        "type": "view"
+                    }
+                ]
+            }
         }
     ]
 }

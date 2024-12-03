@@ -3,8 +3,8 @@
 from django.db import migrations, models
 import django.db.models.deletion
 import uuid
-import zelthy.apps.dynamic_models.fields
-import zelthy.core.storage_utils
+import zango.apps.dynamic_models.fields
+import zango.core.storage_utils
 
 
 class Migration(migrations.Migration):
@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 ('object_uuid', models.UUIDField(default=uuid.uuid4, editable=False, unique=True)),
                 ('circular_no', models.CharField(max_length=100, unique=True)),
                 ('level_cutoff_date', models.DateField()),
-                ('pdf_file', zelthy.core.storage_utils.ZFileField(upload_to=zelthy.core.storage_utils.RandomUniqueFileName, validators=[zelthy.core.storage_utils.validate_file_extension])),
+                ('pdf_file', zango.core.storage_utils.ZFileField(upload_to=zango.core.storage_utils.RandomUniqueFileName, validators=[zango.core.storage_utils.validate_file_extension])),
                 ('created_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
                 ('modified_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
             ],
@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('modified_at', models.DateTimeField(auto_now=True)),
                 ('object_uuid', models.UUIDField(default=uuid.uuid4, editable=False, unique=True)),
-                ('photo', zelthy.core.storage_utils.ZFileField(upload_to=zelthy.core.storage_utils.RandomUniqueFileName, validators=[zelthy.core.storage_utils.validate_file_extension])),
+                ('photo', zango.core.storage_utils.ZFileField(upload_to=zango.core.storage_utils.RandomUniqueFileName, validators=[zango.core.storage_utils.validate_file_extension])),
                 ('name', models.CharField(max_length=100)),
                 ('franchisee_type', models.CharField(choices=[('MF', 'MF - Master Franchisee'), ('DF', 'DF - District Franchisee'), ('DCF', 'DCF - District City Franchisee')], max_length=3)),
                 ('abacus', models.BooleanField(default=False)),
@@ -63,7 +63,7 @@ class Migration(migrations.Migration):
                 ('find_about_us', models.CharField(choices=[('existing_franchisee', 'Existing Franchisee'), ('google', 'Google'), ('other', 'Other')], max_length=20)),
                 ('created_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
                 ('modified_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
-                ('user', zelthy.apps.dynamic_models.fields.ZOneToOneField(on_delete=django.db.models.deletion.CASCADE, to='appauth.appusermodel')),
+                ('user', zango.apps.dynamic_models.fields.ZOneToOneField(on_delete=django.db.models.deletion.CASCADE, to='appauth.appusermodel')),
             ],
             options={
                 'abstract': False,
@@ -95,7 +95,7 @@ class Migration(migrations.Migration):
                 ('modified_at', models.DateTimeField(auto_now=True)),
                 ('object_uuid', models.UUIDField(default=uuid.uuid4, editable=False, unique=True)),
                 ('name', models.CharField(max_length=255)),
-                ('photo', zelthy.core.storage_utils.ZFileField(upload_to=zelthy.core.storage_utils.RandomUniqueFileName, validators=[zelthy.core.storage_utils.validate_file_extension])),
+                ('photo', zango.core.storage_utils.ZFileField(upload_to=zango.core.storage_utils.RandomUniqueFileName, validators=[zango.core.storage_utils.validate_file_extension])),
                 ('centre_name', models.CharField(max_length=255)),
                 ('program_name', models.CharField(choices=[('abacus', 'Abacus'), ('vedic_maths', 'Vedic Maths'), ('handwriting', 'Handwriting'), ('calligraphy', 'Calligraphy')], max_length=20)),
                 ('dob', models.DateField()),
@@ -111,9 +111,9 @@ class Migration(migrations.Migration):
                 ('how_did_you_come_to_know_us', models.CharField(choices=[('existing', 'Existing'), ('franchise', 'Franchise'), ('google', 'Google'), ('other', 'Other')], max_length=20)),
                 ('date', models.DateField(auto_now_add=True)),
                 ('created_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
-                ('franchise', zelthy.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.franchisee')),
+                ('franchise', zango.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.franchisee')),
                 ('modified_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
-                ('user', zelthy.apps.dynamic_models.fields.ZOneToOneField(on_delete=django.db.models.deletion.CASCADE, to='appauth.appusermodel')),
+                ('user', zango.apps.dynamic_models.fields.ZOneToOneField(on_delete=django.db.models.deletion.CASCADE, to='appauth.appusermodel')),
             ],
             options={
                 'abstract': False,
@@ -129,9 +129,9 @@ class Migration(migrations.Migration):
                 ('training_level', models.PositiveIntegerField()),
                 ('date', models.DateField(auto_now_add=True)),
                 ('created_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
-                ('franchise', zelthy.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.franchisee')),
+                ('franchise', zango.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.franchisee')),
                 ('modified_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
-                ('name', zelthy.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.teacher')),
+                ('name', zango.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.teacher')),
             ],
             options={
                 'abstract': False,
@@ -146,7 +146,7 @@ class Migration(migrations.Migration):
                 ('object_uuid', models.UUIDField(default=uuid.uuid4, editable=False, unique=True)),
                 ('s_id', models.CharField(max_length=20, unique=True)),
                 ('name', models.CharField(max_length=100)),
-                ('photo', zelthy.core.storage_utils.ZFileField(upload_to=zelthy.core.storage_utils.RandomUniqueFileName, validators=[zelthy.core.storage_utils.validate_file_extension])),
+                ('photo', zango.core.storage_utils.ZFileField(upload_to=zango.core.storage_utils.RandomUniqueFileName, validators=[zango.core.storage_utils.validate_file_extension])),
                 ('course', models.CharField(choices=[('abacus', 'Abacus'), ('vedic_maths', 'Vedic Maths'), ('handwriting', 'Handwriting')], max_length=20, null=True)),
                 ('programme', models.CharField(choices=[('junior', 'Junior'), ('senior', 'Senior')], max_length=10, null=True)),
                 ('level', models.IntegerField()),
@@ -169,7 +169,7 @@ class Migration(migrations.Migration):
                 ('course_start_date', models.DateField(null=True)),
                 ('dropped', models.BooleanField(default=False)),
                 ('created_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
-                ('franchise', zelthy.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.franchisee')),
+                ('franchise', zango.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.franchisee')),
                 ('modified_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
             ],
             options={
@@ -191,7 +191,7 @@ class Migration(migrations.Migration):
                 ('contact', models.CharField(max_length=20)),
                 ('created_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
                 ('modified_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
-                ('school', zelthy.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.school')),
+                ('school', zango.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.school')),
             ],
             options={
                 'abstract': False,
@@ -207,7 +207,7 @@ class Migration(migrations.Migration):
                 ('date', models.DateField(auto_now_add=True)),
                 ('created_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
                 ('modified_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
-                ('student', zelthy.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.student')),
+                ('student', zango.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.student')),
             ],
             options={
                 'abstract': False,
@@ -222,7 +222,7 @@ class Migration(migrations.Migration):
                 ('object_uuid', models.UUIDField(default=uuid.uuid4, editable=False, unique=True)),
                 ('name', models.CharField(max_length=255)),
                 ('date', models.DateField()),
-                ('photo', zelthy.core.storage_utils.ZFileField(upload_to=zelthy.core.storage_utils.RandomUniqueFileName, validators=[zelthy.core.storage_utils.validate_file_extension])),
+                ('photo', zango.core.storage_utils.ZFileField(upload_to=zango.core.storage_utils.RandomUniqueFileName, validators=[zango.core.storage_utils.validate_file_extension])),
                 ('details', models.TextField()),
                 ('created_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
                 ('modified_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
@@ -264,11 +264,11 @@ class Migration(migrations.Migration):
                 ('modified_at', models.DateTimeField(auto_now=True)),
                 ('object_uuid', models.UUIDField(default=uuid.uuid4, editable=False, unique=True)),
                 ('date', models.DateField(auto_now_add=True)),
-                ('competition', zelthy.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.competition')),
+                ('competition', zango.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.competition')),
                 ('created_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
-                ('franchise', zelthy.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.franchisee')),
+                ('franchise', zango.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.franchisee')),
                 ('modified_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
-                ('student', zelthy.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.student')),
+                ('student', zango.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.student')),
             ],
             options={
                 'abstract': False,
@@ -282,10 +282,10 @@ class Migration(migrations.Migration):
                 ('modified_at', models.DateTimeField(auto_now=True)),
                 ('object_uuid', models.UUIDField(default=uuid.uuid4, editable=False, unique=True)),
                 ('rank', models.PositiveIntegerField()),
-                ('competition', zelthy.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.competition')),
+                ('competition', zango.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.competition')),
                 ('created_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
                 ('modified_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
-                ('student', zelthy.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.student')),
+                ('student', zango.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dynamic_models.student')),
             ],
             options={
                 'abstract': False,

@@ -1,4 +1,7 @@
 import json
+
+from ..franchise.utils import get_current_franchise
+from zango.core.utils import get_current_request
 from ..packages.crud.forms import BaseForm
 from ..packages.crud.form_fields import ModelField, CustomSchemaField
 from .models import Vendor, Item, Kit, Log, Order, SchoolOrder
@@ -33,7 +36,7 @@ class ItemForm(BaseForm):
     description = ModelField(placeholder="Description", required=True, required_msg="This field is required")
     qty = ModelField(placeholder="Quantity", required=True, required_msg="This field is required")
     last_purchase_price = ModelField(placeholder="Last Purchase Price", required=True, required_msg="This field is required")
-    kit = ModelField(placeholder="Kit")
+    kit = ModelField(placeholder="Kit", extra_ui_schema={"ui:widget": "select"})
 
     class Meta:
         model = Item
@@ -46,6 +49,12 @@ class ItemForm(BaseForm):
             "kit"
         ]
 
+    def __init__(self, *args, **kwargs):
+        super(ItemForm, self).__init__(*args, **kwargs)
+        self.fields['kit'].choices=[(str(x.id), x.__str__()) for x in Kit.objects.all()]
+
+
+
 class LogForm(BaseForm):
     vendor = ModelField(placeholder="Vendor", required=True, required_msg="This field is required")
     supply_items = CustomSchemaField(
@@ -55,6 +64,10 @@ class LogForm(BaseForm):
             "title": "Menu",
             "items": {
                 "type": "object",
+                "required": [
+                    "item",
+                    "qty"
+                ],
                 "properties": {
                     "item": {
                         "type": "string",
@@ -63,7 +76,7 @@ class LogForm(BaseForm):
                     "qty": {
                         "type": "string",
                         "title": "Quantity",
-                        "default": "0"
+                    
                     },
             }
         }
@@ -118,6 +131,8 @@ class LogForm(BaseForm):
         vendor = self.data.get("vendor")
         supply_items = self.data.get("supply_items")
         if commit:
+            if supply_items is None:
+                return instance
             instance.vendor_id = int(vendor)
             instance.items = supply_items
             item_info = json.loads(supply_items)
@@ -130,8 +145,7 @@ class LogForm(BaseForm):
                 log_item.save()
             instance.save()
         return instance
-
-
+    
 class OrderForm(BaseForm):
     order_items = CustomSchemaField(
         required=False,
@@ -140,6 +154,10 @@ class OrderForm(BaseForm):
             "title": "Items",
             "items": {
                 "type": "object",
+                "required": [
+                    "item",
+                    "item_qty"
+                ],
                 "properties": {
                     "item": {
                         "type": "string",
@@ -148,7 +166,7 @@ class OrderForm(BaseForm):
                     "item_qty": {
                         "type": "string",
                         "title": "Quantity",
-                        "default": "0"
+                        
                     }
                 }
             }
@@ -184,6 +202,10 @@ class OrderForm(BaseForm):
             "title": "Kits",
             "items": {
                 "type": "object",
+                "required": [
+                    "kit",
+                    "kit_qty"
+                ],
                 "properties": {
                     "kit": {
                         "type": "string",
@@ -192,7 +214,7 @@ class OrderForm(BaseForm):
                     "kit_qty": {
                         "type": "string",
                         "title": "Quantity",
-                        "default": "0"
+                    
                     }
                 }
             }
@@ -232,29 +254,32 @@ class OrderForm(BaseForm):
     def __init__(self, *args, **kwargs):
         super(OrderForm, self).__init__(*args, **kwargs)
         instance = kwargs.get("instance")
-        items = [str(item.pk) for item in Item.objects.all()]
+        items = [str(item.pk) for item in Item.objects.filter(kit=None)]
         kits = [str(kit.pk) for kit in Kit.objects.all()]
         self.custom_schema_fields["order_items"].schema["items"]["properties"]["item"]["enum"] = items
-        self.custom_schema_fields["order_items"].schema["items"]["properties"]["item"]["enumNames"] = [obj.name for obj in Item.objects.all()]
+        self.custom_schema_fields["order_items"].schema["items"]["properties"]["item"]["enumNames"] = [obj.name for obj in Item.objects.filter(kit=None)]
         self.custom_schema_fields["kits"].schema["items"]["properties"]["kit"]["enum"] = kits
         self.custom_schema_fields["kits"].schema["items"]["properties"]["kit"]["enumNames"] = [obj.name for obj in Kit.objects.all()]
         if instance is not None:
             self.update = True
-            items = Item.objects.all().values_list("id")
+            items = Item.objects.filter(kit=None).values_list("id")
             kits = Kit.objects.all().values_list("id")
             self.custom_schema_fields["order_items"].schema["items"]["properties"]["item"]["enum"] = items
-        self.custom_schema_fields["order_items"].schema["items"]["properties"]["item"]["enumNames"] = [obj.name for obj in Item.objects.all()]
+        self.custom_schema_fields["order_items"].schema["items"]["properties"]["item"]["enumNames"] = [obj.name for obj in Item.objects.filter(kit=None)]
         self.custom_schema_fields["kits"].schema["items"]["properties"]["kit"]["enum"] = kits
         self.custom_schema_fields["kits"].schema["items"]["properties"]["kit"]["enumNames"] = [obj.name for obj in Kit.objects.all()]
 
     def save(self, commit=True):
         instance = super().save(commit=False)
         order_items = self.data.get("order_items")
+        franchise = get_current_franchise()
         kits = self.data.get("kits")
         if commit:
+            if order_items is None and kits is None:
+                return instance
             instance.items = order_items
             instance.kits = kits
-            instance.franchise_id=1
+            instance.franchise_id=franchise.id
             instance.save()
             franchise = Franchisee.objects.get(pk=instance.franchise_id)
             Notification.objects.create(

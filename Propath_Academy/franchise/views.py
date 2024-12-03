@@ -1,9 +1,15 @@
-from zelthy.core.utils import get_current_role
-from ..packages.crud.base import BaseCrudView
+from zango.core.utils import get_current_role
+from ..packages.crud.base import BaseCrudView, BaseFormOnlyView
 from .tables import FranchiseeTable, StudentTable, LevelCertificateTable
-from .forms import FranchiseeForm, StudentForm, StudentLevelForm
+from .forms import FranchiseeForm, StudentForm, StudentLevelForm, CourseStartDateForm
 from django.views import View
 from django.http import HttpResponse
+
+
+class CourseStartDateView(BaseFormOnlyView):
+    form = CourseStartDateForm
+    success_url = '/franchisee/students/'
+    page_title = "Course Start Date Form"
 
 
 class FranchiseeCrudView(BaseCrudView):
@@ -33,6 +39,9 @@ class StudentCrudView(BaseCrudView):
     def display_add_button_check(self, request):
         return get_current_role().name in [ 'Franchisee']
     
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin', 'Franchisee']
+    
 class LevelCertificateCrudView(BaseCrudView):
     page_title = "Level Certificate Requests"
     add_btn_title = "Add"
@@ -44,6 +53,9 @@ class LevelCertificateCrudView(BaseCrudView):
     
     def display_add_button_check(self, request):
         return get_current_role().name in [ 'Franchisee']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin', 'Franchisee']
     
 # class TestView(View):
 #     def get(self,request, *args, **kwargs):

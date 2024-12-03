@@ -1,9 +1,11 @@
 from django.db import models
-from zelthy.apps.dynamic_models.models import DynamicModelBase
-from zelthy.apps.dynamic_models.fields import ZForeignKey
-from zelthy.core.storage_utils import ZFileField
+from zango.apps.dynamic_models.models import DynamicModelBase
+from zango.apps.dynamic_models.fields import ZForeignKey
+from zango.core.storage_utils import ZFileField
 from ..franchise.models import Student, Franchisee
 from ..teacher.models import Teacher
+from django.db.models.signals import post_init
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -34,11 +36,17 @@ class Competition(DynamicModelBase):
     level_cutoff_date = models.DateField()
     pdf_file = ZFileField()
 
+    def __str__(self):
+        return f"{self.circular_no} - {self.name}"
+
 class CompetitionStudent(DynamicModelBase):
     competition = ZForeignKey(Competition, on_delete=models.CASCADE)
     franchise = ZForeignKey(Franchisee, on_delete=models.CASCADE)
     student = ZForeignKey(Student, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
+
+    class Meta(DynamicModelBase.Meta):
+        unique_together = ('competition', 'franchise')
 
 class CompetitionResult(DynamicModelBase):
     competition = ZForeignKey(Competition, on_delete=models.CASCADE)
@@ -87,3 +95,15 @@ class Event(DynamicModelBase):
     date = models.DateField()
     photo = ZFileField()
     details = models.TextField()
+
+class Stat(DynamicModelBase):
+    students = models.PositiveIntegerField()
+    teachers = models.PositiveIntegerField()
+    franchises = models.PositiveIntegerField()
+
+class Testimonial(DynamicModelBase):
+    name = models.CharField(max_length=100)
+    designation = models.CharField(max_length=100)
+    quote = models.TextField()
+    date = models.DateField()
+

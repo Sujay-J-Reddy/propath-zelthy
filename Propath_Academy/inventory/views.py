@@ -2,7 +2,7 @@ from ..packages.crud.base import BaseCrudView
 from .tables import KitTable, VendorTable, ItemTable, LogTable, OrderTable, SchoolOrderTable
 from .forms import KitForm, VendorForm, ItemForm, LogForm, OrderForm, SchoolOrderForm
 from .workflow import OrderWorkflow, SchoolOrderWorkflow
-from zelthy.core.utils import get_current_role
+from zango.core.utils import get_current_role
 
 class SchoolOrderCrudView(BaseCrudView):
     page_title = "School Order"
@@ -15,7 +15,10 @@ class SchoolOrderCrudView(BaseCrudView):
         return True
 
     def display_add_button_check(self, request):
-        return get_current_role().name in ['Admin']
+        return get_current_role().name in ['Admin', 'AnonymousUsers']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
 
 class KitCrudView(BaseCrudView):
     page_title = "Kits"
@@ -27,7 +30,10 @@ class KitCrudView(BaseCrudView):
         return True
 
     def display_add_button_check(self, request):
-        return get_current_role().name in ['Admin']
+        return get_current_role().name in ['Admin', 'AnonymousUsers']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
     
 class VendorCrudView(BaseCrudView):
     page_title = "Vendors"
@@ -39,7 +45,10 @@ class VendorCrudView(BaseCrudView):
         return True
 
     def display_add_button_check(self, request):
-        return get_current_role().name in ['Admin']
+        return get_current_role().name in ['Admin', 'AnonymousUsers']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
     
 class ItemCrudView(BaseCrudView):
     page_title = "Items"
@@ -51,7 +60,10 @@ class ItemCrudView(BaseCrudView):
         return True
 
     def display_add_button_check(self, request):
-        return get_current_role().name in ['Admin']
+        return get_current_role().name in ['Admin', 'AnonymousUsers']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
     
 class LogCrudView(BaseCrudView):
     page_title = "Logs"
@@ -63,7 +75,10 @@ class LogCrudView(BaseCrudView):
         return True
 
     def display_add_button_check(self, request):
-        return get_current_role().name in ['Admin']
+        return get_current_role().name in ['Admin', 'AnonymousUsers']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
     
 class OrderCrudView(BaseCrudView):
     page_title = "Orders"
@@ -77,5 +92,8 @@ class OrderCrudView(BaseCrudView):
 
     def display_add_button_check(self, request):
         return get_current_role().name in ['Franchisee']
+    
+    def display_download_button_check(self, request):
+        return get_current_role().name in [ 'Admin']
     
 

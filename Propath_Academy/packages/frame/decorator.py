@@ -3,9 +3,9 @@ from functools import wraps
 from django.shortcuts import redirect
 from django.core.exceptions import ImproperlyConfigured
 
-from zelthy.core.utils import get_current_role
-from zelthy.core.utils import get_current_request
-from zelthy.apps.shared.tenancy.models import ThemesModel
+from zango.core.utils import get_current_role
+from zango.core.utils import get_current_request
+from zango.apps.shared.tenancy.models import ThemesModel
 
 from .helpers import get_frame_config, get_frame_landing_url
 

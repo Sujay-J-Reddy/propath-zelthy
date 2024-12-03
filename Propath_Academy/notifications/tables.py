@@ -3,7 +3,7 @@ from ..packages.crud.table.base import ModelTable
 from ..packages.crud.table.column import ModelCol, StringCol
 from .forms import NotificationForm
 from .models import Notification
-from zelthy.core.utils import get_current_role
+from zango.core.utils import get_current_role
 from ..franchise.utils import get_current_franchise
 
 class NotificationTable(ModelTable):
@@ -60,7 +60,7 @@ class NotificationTable(ModelTable):
         elif role.name == 'Teacher':
             return queryset.filter(account_type='teacher')
         else:
-            return queryset.filter(account_type__in=['franchise', 'teacher'], franchise=get_current_franchise())
+            return  queryset.filter(Q(account_type__in=['franchise', 'teacher']) & (Q(franchise=get_current_franchise()) | Q(franchise=None)))
         
 
     

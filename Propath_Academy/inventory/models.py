@@ -1,7 +1,7 @@
 from django.db import models
-from zelthy.apps.dynamic_models.models import DynamicModelBase
-from zelthy.apps.dynamic_models.fields import ZForeignKey
-from zelthy.core.storage_utils import ZFileField
+from zango.apps.dynamic_models.models import DynamicModelBase
+from zango.apps.dynamic_models.fields import ZForeignKey
+from zango.core.storage_utils import ZFileField
 from ..franchise.models import Franchisee
 from ..academy.models import School
 
@@ -30,9 +30,9 @@ class Kit(DynamicModelBase):
 class Item(DynamicModelBase):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField()
-    qty = models.PositiveIntegerField(default=0)
-    last_purchase_price = models.PositiveIntegerField(default=0)
-    kit = ZForeignKey(Kit, on_delete=models.SET_NULL,null=True, related_name='kit_name')
+    qty = models.PositiveIntegerField()
+    last_purchase_price = models.PositiveIntegerField()
+    kit = ZForeignKey(Kit, on_delete=models.SET_NULL, null=True,blank=True, related_name='kit_name')
 
 class Log(DynamicModelBase):
     vendor = ZForeignKey(Vendor,on_delete=models.DO_NOTHING, related_name='vendor')

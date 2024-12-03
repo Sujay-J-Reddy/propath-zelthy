@@ -5,8 +5,8 @@ import django.contrib.postgres.fields.jsonb
 from django.db import migrations, models
 import django.db.models.deletion
 import uuid
-import zelthy.apps.dynamic_models.fields
-import zelthy.core.storage_utils
+import zango.apps.dynamic_models.fields
+import zango.core.storage_utils
 
 
 class Migration(migrations.Migration):
@@ -59,7 +59,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "user_role",
-                    zelthy.apps.dynamic_models.fields.ZOneToOneField(
+                    zango.apps.dynamic_models.fields.ZOneToOneField(
                         help_text="User Role",
                         on_delete=django.db.models.deletion.PROTECT,
                         related_name="login_config",
@@ -95,20 +95,20 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "logo",
-                    zelthy.core.storage_utils.ZFileField(
+                    zango.core.storage_utils.ZFileField(
                         blank=True,
                         null=True,
-                        upload_to=zelthy.core.storage_utils.RandomUniqueFileName,
-                        validators=[zelthy.core.storage_utils.validate_file_extension],
+                        upload_to=zango.core.storage_utils.RandomUniqueFileName,
+                        validators=[zango.core.storage_utils.validate_file_extension],
                     ),
                 ),
                 (
                     "background_image",
-                    zelthy.core.storage_utils.ZFileField(
+                    zango.core.storage_utils.ZFileField(
                         blank=True,
                         null=True,
-                        upload_to=zelthy.core.storage_utils.RandomUniqueFileName,
-                        validators=[zelthy.core.storage_utils.validate_file_extension],
+                        upload_to=zango.core.storage_utils.RandomUniqueFileName,
+                        validators=[zango.core.storage_utils.validate_file_extension],
                     ),
                 ),
                 (

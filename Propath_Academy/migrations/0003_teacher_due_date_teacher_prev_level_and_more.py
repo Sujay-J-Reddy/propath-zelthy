@@ -3,7 +3,7 @@
 from django.db import migrations, models
 import django.db.models.deletion
 import uuid
-import zelthy.apps.dynamic_models.fields
+import zango.apps.dynamic_models.fields
 
 
 class Migration(migrations.Migration):
@@ -55,7 +55,7 @@ class Migration(migrations.Migration):
                 ('date', models.DateField(auto_now_add=True)),
                 ('created_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
                 ('modified_by', models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.PROTECT, to='appauth.appusermodel')),
-                ('teacher', zelthy.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='dynamic_models.teacher')),
+                ('teacher', zango.apps.dynamic_models.fields.ZForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='dynamic_models.teacher')),
             ],
             options={
                 'abstract': False,

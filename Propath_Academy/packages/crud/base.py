@@ -9,10 +9,11 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 
 
-from zelthy.core.api import get_api_response
+from zango.core.api import get_api_response
 from ...packages.frame.decorator import add_frame_context
 from .mixin import CrudRequestMixin
 from .forms import BaseForm
+
 
 @method_decorator(never_cache, name="dispatch")
 class BaseCrudView(TemplateView, CrudRequestMixin):

@@ -1,16 +1,17 @@
+import re
 from django.contrib.auth import login, REDIRECT_FIELD_NAME
 from django.http import Http404
 from django.shortcuts import redirect
 from django.core.exceptions import ImproperlyConfigured
-
+from zango.core.utils import get_current_request_url
 from formtools.wizard.views import SessionWizardView
 
-from zelthy.apps.appauth.models import UserRoleModel
+from zango.apps.appauth.models import UserRoleModel
 
 from .base import ZelthyLoginBase
 
 
-USER_AUTH_BACKEND = "zelthy.apps.appauth.auth_backend.AppUserModelBackend"
+USER_AUTH_BACKEND = "zango.apps.appauth.auth_backend.AppUserModelBackend"
 
 
 class ZelthyLoginView(ZelthyLoginBase, SessionWizardView):
@@ -191,3 +192,21 @@ class ZelthyLoginView(ZelthyLoginBase, SessionWizardView):
     def get_form_metadata(self, step):
         self.storage.extra_data.setdefault("forms", {})
         return self.storage.extra_data["forms"].get(step, None)
+
+
+def remove_port_from_url(domain_url):
+
+    # Use regex to remove the port number if it exists
+
+    cleaned_url = re.sub(r':\d+', '', domain_url)
+
+    return cleaned_url
+
+
+def get_domain_url(request):
+
+    domain_url = get_current_request_url(request)
+
+    cleaned_url = remove_port_from_url(domain_url)
+
+    return cleaned_url

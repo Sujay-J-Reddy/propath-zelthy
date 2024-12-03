@@ -14,11 +14,11 @@ from crispy_forms.layout import (
     Field,
 )
 
-from zelthy.apps.appauth.models import AppUserModel, OldPasswords
-from zelthy.apps.shared.tenancy.models import TenantModel
-from zelthy.api.app_auth.profile.v1.utils import PasswordValidationMixin
-from zelthy.core.utils import get_package_url
-from zelthy.core.package_utils import package_installed
+from zango.apps.appauth.models import AppUserModel, OldPasswords
+from zango.apps.shared.tenancy.models import TenantModel
+from zango.api.app_auth.profile.v1.utils import PasswordValidationMixin
+from zango.core.utils import get_package_url
+from zango.core.package_utils import package_installed
 
 
 class ZelthyAuthenticationForm(AuthenticationForm):
@@ -52,12 +52,14 @@ class LoginForm(ZelthyAuthenticationForm):
         super(LoginForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_show_labels = False
+        submit_button = Submit("submit", "Login")
+        submit_button.field_classes = "btn"
         layout_list = [
             Div(
                 Field("username", placeholder="Email ID/ Mobile Number"),
                 Field("password", placeholder="Password"),
             ),
-            ButtonHolder(Submit("submit", "Login")),
+            ButtonHolder(submit_button),
         ]
 
         self.helper.layout = Layout(*layout_list)
@@ -66,59 +68,61 @@ class LoginForm(ZelthyAuthenticationForm):
         self.helper.field_class = "uk-input-group uk-text-small"
 
 
-
 class AppLoginForm(LoginForm):
     usermodel = AppUserModel
 
     def __init__(self, *args, **kwargs):
         super(AppLoginForm, self).__init__(*args, **kwargs)
-        self.request = self.initial['request']
-        sso_pkg_config = package_installed('sso', self.request.tenant)
+        self.request = self.initial["request"]
+        sso_pkg_config = package_installed("sso", self.request.tenant)
         self.helper = FormHelper()
         self.helper.form_show_labels = False
+        submit_button = Submit("submit", "Login")
+        submit_button.field_classes = "btn"
         layout_list = [
             Div(
                 Field("username", placeholder="Email ID/ Mobile Number"),
                 Field("password", placeholder="Password"),
             ),
-            ButtonHolder(Submit("submit", "Login")),
+            ButtonHolder(submit_button),
         ]
 
         saml_div = None
         if sso_pkg_config:
-            self.fields['saml'] = forms.ChoiceField()        
-            self.fields['saml'].required = False
-            self.fields['username'].required = False
-            self.fields['password'].required = False
+            self.fields["saml"] = forms.ChoiceField()
+            self.fields["saml"].required = False
+            self.fields["username"].required = False
+            self.fields["password"].required = False
 
             samls = {}
             url = get_package_url(
-                    self.request,
-                    f"saml/fetch_saml_config/?action=fetch_config",
-                    "sso",    
+                self.request,
+                f"saml/fetch_saml_config/?action=fetch_config",
+                "sso",
             )
             response = requests.get(url)
-            saml_choices = [(0, "Select organization"),]
-            if response.status_code==200:
+            saml_choices = [
+                (0, "Select organization"),
+            ]
+            if response.status_code == 200:
                 samls = response.json().get("response")
             for s in samls:
                 saml_choices.append((s, samls[s]))
             saml_choices = tuple(saml_choices)
-            self.fields['saml'].choices = saml_choices
-            saml_div =  Div(
-                    HTML("""<p style='text-align:center;'>Or</p>"""),
-                    HTML("""<h4>Choose a single sign-on option</h4>"""),            
-                    Field('saml', label="Select organization", css_class='select-style'),          
-                )
+            self.fields["saml"].choices = saml_choices
+            saml_div = Div(
+                HTML("""<p style='text-align:center;'>Or</p>"""),
+                HTML("""<h4>Choose a single sign-on option</h4>"""),
+                Field("saml", label="Select organization", css_class="select-style"),
+            )
 
         if len(layout_list) > 1:
             if saml_div:
-                layout_list.insert(len(layout_list)-1, saml_div)    
+                layout_list.insert(len(layout_list) - 1, saml_div)
         self.helper.layout = Layout(*layout_list)
 
-        self.helper.form_class = 'uk-form uk-form-stacked'
-        self.helper.field_class = 'uk-input-group uk-text-small'
-
+        self.helper.form_class = "uk-form uk-form-stacked"
+        self.helper.field_class = "uk-input-group uk-text-small"
 
 
 class UserRoleSelectionForm(forms.Form):
@@ -139,6 +143,8 @@ class UserRoleSelectionForm(forms.Form):
         choices = tuple(choices)
         self.fields["user_role"].choices = choices
         _text = "Select User Role"
+        submit_button = Submit("submit", "Proceed")
+        submit_button.field_classes = "btn"
         if len(choices) > 0:
             if len(choices) > 1:
                 self.helper.layout = Layout(
@@ -150,7 +156,7 @@ class UserRoleSelectionForm(forms.Form):
                             css_class="select-style",
                         ),
                     ),
-                    ButtonHolder(Submit("submit", "Proceed")),
+                    ButtonHolder(submit_button),
                 )
             else:
                 ## If only 1 role is available and the form is shown (required in openid login), then autosubmit
@@ -165,7 +171,7 @@ class UserRoleSelectionForm(forms.Form):
                             css_class="select-style",
                         ),
                     ),
-                    ButtonHolder(Submit("submit", "Proceed")),
+                    ButtonHolder(submit_button),
                 )
 
         else:
@@ -183,6 +189,7 @@ class ChangePasswordForm(forms.Form, PasswordValidationMixin):
     password1 = forms.CharField(widget=forms.PasswordInput)
     password2 = forms.CharField(widget=forms.PasswordInput)
     oldpassword_model = OldPasswords
+
     def __init__(self, *args, **kwargs):
         if kwargs.get("user"):
             self.user = kwargs["user"]
@@ -194,6 +201,9 @@ class ChangePasswordForm(forms.Form, PasswordValidationMixin):
         else:
             self.token = None
         super(ChangePasswordForm, self).__init__(*args, **kwargs)
+        submit_button = Submit("submit", "Submit")
+        submit_button.field_classes = "btn"
+
         self.helper = FormHelper()
         self.helper.form_show_labels = False
         self.helper.layout = Layout(
@@ -203,7 +213,7 @@ class ChangePasswordForm(forms.Form, PasswordValidationMixin):
                 Field("password1", placeholder="New password"),
                 Field("password2", placeholder="Confirm password"),
             ),
-            ButtonHolder(Submit("submit", "Submit")),
+            ButtonHolder(submit_button),
         )
         self.helper.form_class = "form"
 
@@ -248,13 +258,15 @@ class ResetPasswordForm(ChangePasswordForm):
 
     def __init__(self, *args, **kwargs):
         super(ResetPasswordForm, self).__init__(*args, **kwargs)
+        submit_buttton = Submit("submit", "Submit")
+        submit_buttton.field_classes = "btn"
         self.helper.layout = Layout(
             Div(
                 HTML("""<h2>Set a new password</h2>"""),
                 Field("password1", placeholder="New password"),
                 Field("password2", placeholder="Confirm password"),
             ),
-            ButtonHolder(Submit("submit", "Submit")),
+            ButtonHolder(submit_buttton),
         )
 
     def clean_password(self):
