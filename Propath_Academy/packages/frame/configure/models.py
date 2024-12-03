@@ -10,3 +10,6 @@ class FramesModel(DynamicModelBase):
         UserRoleModel, on_delete=models.PROTECT, related_name="frame"
     )
     config = models.JSONField()
+    
+    class DynamicModelMeta:
+        is_config_model = True
