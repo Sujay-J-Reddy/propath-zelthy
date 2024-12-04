@@ -42,8 +42,16 @@ class LandingView(TemplateView):
             numbers = Stat(students=0, teachers=0, franchises=0)  
 
         context['numbers'] = numbers
-        context['testimonial1'] = actual_testimonials[0] or sample_testimonials[0]
-        context['testimonial2'] = actual_testimonials[1] or sample_testimonials[1]
+        try:
+            context['testimonial1'] = actual_testimonials[0]
+        except IndexError:
+            context['testimonial1'] = sample_testimonials[0]
+
+        try:
+            context['testimonial2'] = actual_testimonials[1]
+        except IndexError:
+            context['testimonial2'] = sample_testimonials[1]
+
 
         return context
 

@@ -59,7 +59,7 @@ class TeacherForm(BaseForm):
         instance = super(TeacherForm, self).save(commit=False)
         if instance.pk is None:
             # !ToDo: Remove hard coded password, pass empty and core will set unusable password.
-            password = "Propath@123"
+            password = "Propath@1234"
             user_role = UserRoleModel.objects.get(name="Teacher")
 
             # Creating new user for patient
