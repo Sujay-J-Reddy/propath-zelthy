@@ -29,6 +29,7 @@ class KitTable(ModelTable):
         model = Kit
         detail_class = KitDetail
         fields = ["name"]
+        card_primary_fields = ["name"]
 
     def name_Q_obj(self, search_term):
         if search_term is not None:
@@ -60,6 +61,7 @@ class VendorTable(ModelTable):
             "contact",
             "location"
         ]
+        card_primary_fields = [ "contact","location"]
 
     def id_Q_obj(self, search_term):
         try:
@@ -100,6 +102,7 @@ class ItemTable(ModelTable):
             "last_purchase_price",
             "kit",
         ]
+        card_primary_fields = [ "qty","kit"]
     
     def kit_getval(self, obj):
         if obj.kit:
@@ -147,6 +150,7 @@ class LogTable(ModelTable):
             "date",
             "items"
         ]
+        card_primary_fields = [ "date"]
 
     def items_getval(self, obj):
         html = json_to_html_table(obj.items)
@@ -190,6 +194,7 @@ class OrderTable(ModelTable):
             "items",
             "order_date",
         ]
+        card_primary_fields = ["id", "order_date"]
 
     def id_Q_obj(self, search_term):
         try:
@@ -269,6 +274,7 @@ class SchoolOrderTable(OrderTable):
             "items",
             "order_date",
         ]
+        card_primary_fields = ["id", "order_date"]
 
     def kits_getval(self, obj):
         if obj.kits != None:

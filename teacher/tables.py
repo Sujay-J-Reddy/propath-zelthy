@@ -64,6 +64,7 @@ class TeacherTable(ModelTable):
             "contact_no",
             "email",
         ]
+        card_primary_fields = [ "program_name", "franchise", "program_name"]
     
     def can_perform_row_action_edit(self, request, obj):
         # Implement logic to check if the user can perform the Edit action
@@ -182,6 +183,7 @@ class InstructorFeedbackTable(ModelTable):
             "comments_suggestions",
             "date",
         ]
+        card_primary_fields = ["date"]
 
 
     def teacher_getval(self, obj):

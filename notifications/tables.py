@@ -42,6 +42,7 @@ class NotificationTable(ModelTable):
             "notification_type",
             "details"
         ]
+        card_primary_fields = ["date"]
 
     def id_Q_obj(self, search_term):
         try:

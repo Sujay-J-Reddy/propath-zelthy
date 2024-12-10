@@ -52,7 +52,7 @@ class LevelCertificateCrudView(BaseCrudView):
         return True
     
     def display_add_button_check(self, request):
-        return get_current_role().name in [ 'Franchisee']
+        return False
     
     def display_download_button_check(self, request):
         return get_current_role().name in [ 'Admin', 'Franchisee']

@@ -8,7 +8,8 @@ from zango.apps.appauth.models import UserRoleModel
 from zango.apps.appauth.models import AppUserModel
 from zango.core.utils import get_current_request
 from .utils import get_current_franchise
-    # return Franchisee.objects.get(pk=1)
+from django import forms
+from django.core.exceptions import ValidationError
 
 
 class StudentForm(BaseForm):
@@ -16,7 +17,7 @@ class StudentForm(BaseForm):
     name = ModelField(placeholder="Name", required=True, required_msg="This field is required")
     photo = ModelField(placeholder="Upload Photo", required=True, required_msg="This field is required")
     course = ModelField(placeholder="Course", required=True, required_msg="This field is required")
-    programme = ModelField(placeholder="Programme", required=True, required_msg="This field is required")
+    programme = ModelField(placeholder="Programme", required=False)
     level = ModelField(placeholder="Level", required=True, required_msg="This field is required")
     dob = ModelField(placeholder="Date of Birth", required=True, required_msg="This field is required")
     contact = ModelField(placeholder="Contact", required=True, required_msg="This field is required")
@@ -162,7 +163,7 @@ class StudentLevelForm(BaseForm):
     
     class Meta:
         model = Student
-        title = 'Add New Student'
+        title = 'Update student level'
         order = [ 
             'course',
             'programme',
@@ -309,6 +310,7 @@ class CompetitionStudentForm(BaseForm):
         order = [
             "students"
         ]
+
     def __init__(self, *args, **kwargs):
         super(CompetitionStudentForm, self).__init__(*args, **kwargs)
         self.update = False
@@ -323,6 +325,14 @@ class CompetitionStudentForm(BaseForm):
             self.custom_schema_fields["students"].schema["default"]=[str(obj.pk)for obj in Student.objects.filter(s_id__in=ids)]
             self.custom_schema_fields["students"].schema["items"]["enum"]=[str(obj.pk) for obj in Student.objects.filter(franchise=franchise)]
             self.custom_schema_fields["students"].schema["items"]["enumNames"]=[obj.name for obj in Student.objects.filter(franchise=franchise)]
+
+    def clean(self, *args, **kwargs):
+        super().clean(*args, **kwargs)
+        franchise = get_current_franchise()
+        instance = super().save(commit=False)
+        isRegistered = CompetitionStudent.objects.filter(competition=instance, franchise=franchise).exists()
+        if isRegistered:
+            raise ValidationError("This franchise is already registered for this competition")
 
     def save(self, commit=True):
         students = self.data.getlist("students")

@@ -29,7 +29,8 @@
                 ]
             },
             "roles": [
-                "Admin"
+                "Admin",
+                "Teacher"
             ]
         }
     ]

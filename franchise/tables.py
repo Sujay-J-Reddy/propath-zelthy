@@ -43,7 +43,7 @@ class FranchiseeTable(ModelTable):
             "center_address",
             "email",
         ]
-        
+        card_primary_fields = [ "email","contact_number", "center_address"]
 
 
     def can_perform_row_action_edit(self, request, obj):
@@ -134,6 +134,7 @@ class StudentTable(ModelTable):
             "dropped"
         ]
         # row_selector = {"enabled": True, "multi": False}
+        card_primary_fields = ["course","franchise", "contact_number"]
    
     def dropped_getval(self, obj):
         if obj.dropped:
@@ -197,6 +198,7 @@ class LevelCertificateTable(ModelTable):
             'level',
             'date'
         ]
+        card_primary_fields = [ "course", "programme", "level"]
 
     def id_Q_obj(self, search_term):
         try:

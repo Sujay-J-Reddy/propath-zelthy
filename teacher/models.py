@@ -54,6 +54,9 @@ class Teacher(DynamicModelBase):
     date = models.DateField(auto_now_add=True)
     user = ZOneToOneField(AppUserModel, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
+
 class InstructorFeedback(DynamicModelBase):
     SATISFACTORY = 'Satisfactory'
     UNSATISFACTORY = 'Unsatisfactory'
@@ -76,3 +79,6 @@ class InstructorFeedback(DynamicModelBase):
     sharing_experiences = models.CharField(choices=FEEDBACK_CHOICES, max_length=15)
     comments_suggestions = models.TextField(null=True)
     date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.teacher.name}"

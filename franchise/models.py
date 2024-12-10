@@ -61,7 +61,7 @@ class Student(DynamicModelBase):
     name = models.CharField(max_length=100)
     photo = ZFileField()
     course = models.CharField(max_length=20, choices=[('abacus', 'Abacus'), ('vedic_maths', 'Vedic Maths'),('handwriting', 'Handwriting'),], null=True)
-    programme = models.CharField(max_length=10, choices=[('junior', 'Junior'), ('senior', 'Senior')], null=True)
+    programme = models.CharField(max_length=10, choices=[('junior', 'Junior'), ('senior', 'Senior'),('none', 'None')], null=True, blank=True)
     level = models.IntegerField()
     dob = models.DateField()
     contact = models.CharField(max_length=20)
@@ -91,4 +91,7 @@ class LevelCertificate(DynamicModelBase):
     programme = models.CharField(max_length=100)
     level = models.CharField(max_length=100)
     date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.student.s_id} - {self.student.name}"
 

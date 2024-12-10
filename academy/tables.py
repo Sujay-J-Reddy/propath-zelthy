@@ -38,6 +38,7 @@ class EventTable(ModelTable):
             "photo",
             "details"
         ]
+        card_primary_fields = [ "details","date"]
 
     def name_Q_obj(self, search_term):
         if search_term is not None:
@@ -80,6 +81,7 @@ class EnquiryTable(ModelTable):
             "country",
             "date",
         ]
+        card_primary_fields = ["mail","date"]
 
     def name_Q_obj(self, search_term):
         if search_term is not None:
@@ -155,6 +157,7 @@ class CompetitionTable(ModelTable):
             "pdf_file",
         ]
         # row_selector = {"enabled": True, "multi": False}
+        card_primary_fields = ["level_cutoff_date"]
 
     def can_perform_row_action_edit(self, request, obj):
         # Implement logic to check if the user can perform the Edit action
@@ -200,6 +203,7 @@ class CompetitionResultTable(ModelTable):
             "rank",
         ]
         # row_selector = {"enabled": True, "multi": False}
+        card_primary_fields = ["competition","rank"]
     
     def competition_getval(self, obj):
         return f"{obj.competition.circular_no} - {obj.competition.name}"
@@ -244,6 +248,7 @@ class CompetitionStudentTable(ModelTable):
 
         ]
         # row_selector = {"enabled": True, "multi": False}
+        card_primary_fields = ["date"]
 
     def circular_no_getval(self, obj):
         return obj.competition.circular_no
@@ -301,6 +306,7 @@ class SchoolTable(ModelTable):
             "mail",
             "location"
         ]
+        card_primary_fields = ["contact", "mail"]
 
     def name_Q_obj(self, search_term):
         if search_term is not None:
@@ -363,6 +369,7 @@ class SchoolStudentTable(ModelTable):
             "dob",
             "contact",
         ]
+        card_primary_fields = ["school", "course", "programme", "level"]
 
     
     def can_perform_row_action_edit(self, request, obj):
@@ -433,6 +440,7 @@ class StatTable(ModelTable):
             "teachers",
             "franchises"
         ]
+        card_primary_fields = ["students", "teachers", "franchises"]
 
 class TestimonialTable(ModelTable):
     name = ModelCol(display_as="Name",searchable=True,sortable=True)
@@ -460,3 +468,4 @@ class TestimonialTable(ModelTable):
             "quote",
             "date"
         ]
+        card_primary_fields = ["designation", "quote"]

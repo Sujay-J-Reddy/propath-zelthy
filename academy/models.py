@@ -48,10 +48,16 @@ class CompetitionStudent(DynamicModelBase):
     class Meta(DynamicModelBase.Meta):
         unique_together = ('competition', 'franchise')
 
+    def __str__(self):
+        return f"{self.franchise.name}"
+
 class CompetitionResult(DynamicModelBase):
     competition = ZForeignKey(Competition, on_delete=models.CASCADE)
     student = ZForeignKey(Student, on_delete=models.CASCADE)
     rank = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.student.s_id} - {self.student.name}"
     
 class Enquiry(DynamicModelBase):
     STUDENT = 'Student'
@@ -90,11 +96,17 @@ class Enquiry(DynamicModelBase):
     country = models.CharField(max_length=255)  
     date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.name
+
 class Event(DynamicModelBase):
     name = models.CharField(max_length=255)
     date = models.DateField()
     photo = ZFileField()
     details = models.TextField()
+
+    def __str__(self):
+        return self.name
 
 class Stat(DynamicModelBase):
     students = models.PositiveIntegerField()
@@ -106,4 +118,7 @@ class Testimonial(DynamicModelBase):
     designation = models.CharField(max_length=100)
     quote = models.TextField()
     date = models.DateField()
+
+    def __str__(self):
+        return self.name
 
